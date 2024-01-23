@@ -12,8 +12,8 @@ public class ChessPosition {
     int myfile = 1;
 
     public ChessPosition(int row, int col) {
-        myrank = row;
-        myfile = col;
+        myrank = row - 1;
+        myfile = col - 1;
     }
 
     /**

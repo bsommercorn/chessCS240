@@ -80,4 +80,42 @@ public class ChessPiece {
         //System.out.println("Movement blocked by: " + pieceHere.toString());
         return false;
     }
+
+    @Override
+    public String toString() {
+        String myoutput = "";
+        if (myColor == ChessGame.TeamColor.WHITE) {
+            switch (myType) {
+                case KING:
+                    return "K";
+                case QUEEN:
+                    return "Q";
+                case KNIGHT:
+                    return "N";
+                case BISHOP:
+                    return "B";
+                case ROOK:
+                    return "R";
+                case PAWN:
+                    return "P";
+            }
+        }
+        else {
+            switch (myType) {
+                case KING:
+                    return "k";
+                case QUEEN:
+                    return "q";
+                case KNIGHT:
+                    return "n";
+                case BISHOP:
+                    return "b";
+                case ROOK:
+                    return "r";
+                case PAWN:
+                    return "p";
+            }
+        }
+        return myoutput;
+    }
 }
