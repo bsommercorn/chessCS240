@@ -8,7 +8,12 @@ package chess;
  */
 public class ChessPosition {
 
+    int myrank = 1;
+    int myfile = 1;
+
     public ChessPosition(int row, int col) {
+        myrank = row;
+        myfile = col;
     }
 
     /**
@@ -16,7 +21,8 @@ public class ChessPosition {
      * 1 codes for the bottom row
      */
     public int getRow() {
-        throw new RuntimeException("Not implemented");
+        return myrank;
+        //throw new RuntimeException("Not implemented");
     }
 
     /**
@@ -24,6 +30,15 @@ public class ChessPosition {
      * 1 codes for the left row
      */
     public int getColumn() {
-        throw new RuntimeException("Not implemented");
+        return myfile;
+        //throw new RuntimeException("Not implemented");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChessPosition position = (ChessPosition) o;
+        return myrank == position.myrank && myfile == position.myfile;
     }
 }

@@ -1,5 +1,6 @@
 package chess;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -10,7 +11,12 @@ import java.util.Collection;
  */
 public class ChessPiece {
 
+    ChessGame.TeamColor myColor;
+    ChessPiece.PieceType myType;
+
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
+        myColor = pieceColor;
+        myType = type;
     }
 
     /**
@@ -29,14 +35,16 @@ public class ChessPiece {
      * @return Which team this chess piece belongs to
      */
     public ChessGame.TeamColor getTeamColor() {
-        throw new RuntimeException("Not implemented");
+        return myColor;
+        //throw new RuntimeException("Not implemented");
     }
 
     /**
      * @return which type of chess piece this piece is
      */
     public PieceType getPieceType() {
-        throw new RuntimeException("Not implemented");
+        return myType;
+        //throw new RuntimeException("Not implemented");
     }
 
     /**
@@ -47,6 +55,29 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        throw new RuntimeException("Not implemented");
+        return null;
+        //throw new RuntimeException("Not implemented");
+    }
+
+    protected boolean onBoard(ChessPosition possible) { //all pieces should have this actually
+        if (possible.getColumn() < 1 || possible.getColumn() > 8) {
+            return false;
+        }
+        if (possible.getRow() < 1 || possible.getRow() > 8) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean pieceCheck (ChessBoard board, ChessPosition myPosition) {
+        ChessPiece pieceHere = board.getPiece(myPosition);
+        if (pieceHere == null) { //pawn needs an override here, can't move diagonal without enemy pieces present
+            return true;
+        }
+        else if (pieceHere.getTeamColor() != myColor) { //there was an enemy piece, potential capture
+            return true;
+        }
+        //System.out.println("Movement blocked by: " + pieceHere.toString());
+        return false;
     }
 }
