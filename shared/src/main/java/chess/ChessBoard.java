@@ -18,7 +18,7 @@ public class ChessBoard {
     ChessPiece lastcaptured = null;
 
     public ChessBoard() {
-        
+
     }
 
     public ChessPosition getMyWhiteKing() {
@@ -39,35 +39,35 @@ public class ChessBoard {
      * @param piece    the piece to add
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
-
-        pieceCount++;
-        lastcaptured = null;
-        if (piece.getPieceType() == ChessPiece.PieceType.KING){
-            if (piece.getTeamColor() == ChessGame.TeamColor.WHITE) {
-                myWhiteKing = position;
-            }
-            else {
-                myBlackKing = position;
-            }
-        }
-        ChessPiece mypos = myboard[position.getColumn()][position.getRow()];
-        if (mypos == null) { //this seems clunky. Is it wrong?
-            myboard[position.getColumn()][position.getRow()] = piece;
-            //System.out.println("added a piece at (" + position.getColumn() + "," + position.getRow() + ")");
-        }
-        else {
-            System.out.println("A piece was captured!");
-            pieceCount--;
-            lastcaptured = mypos;
-            myboard[position.getColumn()][position.getRow()] = piece;
+        System.out.println("Adding " + piece.getPieceType() + " to position (" + (position.getColumn() + 1) + ", " + (position.getRow() + 1) + ")");
+        switch (piece.getPieceType()) {
+            case KING:
+                myboard[position.getColumn()][position.getRow()] = new King(piece.getTeamColor());
+                break;
+            case QUEEN:
+                myboard[position.getColumn()][position.getRow()] = new Queen(piece.getTeamColor());
+                break;
+            case KNIGHT:
+                myboard[position.getColumn()][position.getRow()] = new Knight(piece.getTeamColor());
+                break;
+            case BISHOP:
+                myboard[position.getColumn()][position.getRow()] = new Bishop(piece.getTeamColor());
+                break;
+            case ROOK:
+                myboard[position.getColumn()][position.getRow()] = new Rook(piece.getTeamColor());
+                break;
+            case PAWN:
+                myboard[position.getColumn()][position.getRow()] = new Pawn(piece.getTeamColor());
+                break;
         }
     }
 
     public void removePiece(ChessPosition position) {
+        System.out.println("Removing piece, piece was a " + this.getPiece(position).getPieceType());
         pieceCount--;
-        ChessPiece mypos = myboard[position.getColumn() - 1][position.getRow() - 1];
+        ChessPiece mypos = myboard[position.getColumn()][position.getRow()];
         if (mypos != null) { //this seems clunky. Is it wrong?
-            myboard[position.getColumn() - 1][position.getRow() - 1] = null;
+            myboard[position.getColumn()][position.getRow()] = null;
         }
         else {
             //System.out.println("No piece here!");
@@ -82,10 +82,11 @@ public class ChessBoard {
      * position
      */
     public ChessPiece getPiece(ChessPosition position) {
-        //return myboard[position.getRow()][position.getColumn()];
-        return myboard[position.getColumn()][position.getRow()];
-        //do nothing yet
-        //throw new RuntimeException("Not implemented");
+        ChessPiece mypos = myboard[position.getColumn()][position.getRow()];
+        if (mypos != null) { //this seems clunky. Is it wrong?
+            return mypos;
+        }
+        return null;
     }
 
     /**
@@ -132,10 +133,7 @@ public class ChessBoard {
         //myBlackKing = new ChessPosition(8,5);
 
         pieceCount = 32;
-        //System.out.println(this.toString());
-        //specific starting game chess setup
-        //do nothing
-        //throw new RuntimeException("Not implemented");
+
         System.out.println(this.toString());
     }
 
@@ -146,11 +144,11 @@ public class ChessBoard {
         for (int i = 7; i >= 0; i--) { //for every rank down from 8
             for (int j = 0; j < 8; j++) { //go across every file
                 if (whiteSquare) {
-                    //myoutput = myoutput + "\u001b[48;5;15m";
+                    myoutput = myoutput + "\u001b[48;5;15m";
                     whiteSquare = false;
                 }
                 else {
-                    //myoutput = myoutput + "\u001b[48;5;43m"; //fix this color
+                    myoutput = myoutput + "\u001b[48;5;43m"; //fix this color
                     whiteSquare = true;
                 }
                 if (myboard[j][i] != null) {
@@ -166,12 +164,12 @@ public class ChessBoard {
                     myoutput = myoutput + "    ";
                 }
             }
-            //myoutput = myoutput + "\u001b[48;5;235m\n"; //here is where we reset the background color so the board doesn't extend forever
+            myoutput = myoutput + "\u001b[48;5;235m"; //here is where we reset the background color so the board doesn't extend forever
             myoutput = myoutput + "\n";
             whiteSquare = !whiteSquare; //\e[0m
         }
         for (int j = 0; j < 8; j++) {
-            myoutput = myoutput + (j + 1) + "   ";
+            myoutput = myoutput + " " + (j + 1) + "  ";
         }
         myoutput = myoutput + "\n";
         /*

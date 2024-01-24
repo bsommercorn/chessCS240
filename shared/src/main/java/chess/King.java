@@ -6,19 +6,21 @@ import java.util.Collection;
 public class King extends ChessPiece{
     public King(ChessGame.TeamColor teamColor) {
         super(teamColor, PieceType.KING);
+        System.out.println("King was created");
     }
 
+    @Override
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         ArrayList<ChessMove> myMoves = new ArrayList<ChessMove>();
 
-        int myColumn = myPosition.getColumn();
-        int myRow = myPosition.getRow();
+        int myColumn = myPosition.getColumn() + 1;
+        int myRow = myPosition.getRow() + 1;
         //while we haven't hit the board or another piece, go right
         int goright = myColumn + 1;
         ChessPosition newPossible = new ChessPosition(myRow, goright);
         if (onBoard(newPossible) && pieceCheck(board, newPossible)) {
             //if (!kingCheck(board, newPossible)) {
-                myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
+            myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
             //}
         }
 
@@ -26,7 +28,7 @@ public class King extends ChessPiece{
         newPossible = new ChessPosition(myRow, goleft);
         if (onBoard(newPossible) && pieceCheck(board, newPossible)) {
             //if (!kingCheck(board, newPossible)) {
-                myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
+            myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
             //}
         }
 
@@ -34,7 +36,7 @@ public class King extends ChessPiece{
         newPossible = new ChessPosition(goup, myColumn);
         if (onBoard(newPossible) && pieceCheck(board, newPossible)) {
             //if (!kingCheck(board, newPossible)) {
-                myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
+            myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
             //}
         }
 
@@ -42,7 +44,7 @@ public class King extends ChessPiece{
         newPossible = new ChessPosition(godown, myColumn);
         if (onBoard(newPossible) && pieceCheck(board, newPossible)) {
             //if (!kingCheck(board, newPossible)) {
-                myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
+            myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
             //}
         }
 
@@ -51,7 +53,7 @@ public class King extends ChessPiece{
         newPossible = new ChessPosition(goup, goright);
         if (onBoard(newPossible) && pieceCheck(board, newPossible)) {
             //if (!kingCheck(board, newPossible)) {
-                myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
+            myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
             //}
         }
 
@@ -60,7 +62,7 @@ public class King extends ChessPiece{
         newPossible = new ChessPosition(goup, goleft);
         if (onBoard(newPossible) && pieceCheck(board, newPossible)) {
             //if (!kingCheck(board, newPossible)) {
-                myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
+            myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
             //}
         }
 
@@ -69,7 +71,7 @@ public class King extends ChessPiece{
         newPossible = new ChessPosition(godown, goleft);
         if (onBoard(newPossible) && pieceCheck(board, newPossible)) {
             //if (!kingCheck(board, newPossible)) {
-                myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
+            myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
             //}
         }
 
@@ -78,7 +80,7 @@ public class King extends ChessPiece{
         newPossible = new ChessPosition(godown, goright);
         if (onBoard(newPossible) && pieceCheck(board, newPossible)) {
             //if (!kingCheck(board, newPossible)) {
-                myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
+            myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
             //}
         }
         //before adding a move, check for threats

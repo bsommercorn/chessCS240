@@ -45,6 +45,11 @@ public class ChessPosition {
     }
 
     @Override
+    public String toString() {
+        return "(" + (myfile + 1) + "," + (myrank + 1) + ")";
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(myrank, myfile);
     }
