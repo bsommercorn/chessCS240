@@ -17,7 +17,6 @@ public class ChessPiece {
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
         myColor = pieceColor;
         myType = type;
-        //System.out.println("Generic Piece created (if this statement is alone)");
     }
 
     /**
@@ -56,23 +55,15 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        if (this.getPieceType() == PieceType.BISHOP) {
-            ChessPiece me = new Bishop(myColor);
-            return me.pieceMoves(board, myPosition);
-        }
-        else {
-
-        }
-        System.out.println("Called generic pieceMoves incorrectly"); //this is not getting overridden by the real classes
         return null;
         //throw new RuntimeException("Not implemented");
     }
 
     protected boolean onBoard(ChessPosition possible) { //all pieces should have this actually
-        if (possible.getColumn() < 0 || possible.getColumn() >= 8) {
+        if (possible.getColumn() < 1 || possible.getColumn() > 8) {
             return false;
         }
-        if (possible.getRow() < 0 || possible.getRow() >= 8) {
+        if (possible.getRow() < 1 || possible.getRow() > 8) {
             return false;
         }
         return true;

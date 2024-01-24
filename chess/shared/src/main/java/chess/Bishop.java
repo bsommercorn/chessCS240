@@ -2,13 +2,11 @@ package chess;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 
 public class Bishop extends ChessPiece {
 
     public Bishop(ChessGame.TeamColor pieceColor) {
         super(pieceColor, PieceType.BISHOP);
-        System.out.println("Bishop was created");
     }
     @Override
     public ChessPiece.PieceType getPieceType() {
@@ -17,81 +15,68 @@ public class Bishop extends ChessPiece {
 
     @Override
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        System.out.println("Called Bishop's pieceMoves");
-        System.out.println(board.toString());
         ArrayList<ChessMove> myMoves = new ArrayList<ChessMove>();
-        //HashSet<ChessMove> myMoves = new HashSet<ChessMove>();
 
         int myColumn = myPosition.getColumn();
         int myRow = myPosition.getRow();
-        int goleft;
-        int goup;
-        int goright;
-        int godown;
-        ChessPosition newPossible;
-
         //while we haven't hit the board or another piece, go right
-        goright = myColumn + 1;
-        goup = myRow + 1;
-        newPossible = new ChessPosition(goup + 1, goright + 1); //ChessPosition newPossible = new ChessPosition(goup, goright);
+        int goright = myColumn + 1;
+        int goup = myRow + 1;
+        ChessPosition newPossible = new ChessPosition(goup, goright);
         while (onBoard(newPossible) && pieceCheck(board, newPossible)) {
-            //myMoves.add(new ChessMove((ChessPosition) myPosition, newPossible, PieceType.BISHOP));
-            myMoves.add(new ChessMove((ChessPosition) myPosition, newPossible));
+            myMoves.add(new ChessMove((ChessPosition) myPosition, newPossible, PieceType.BISHOP));
             if (board.getPiece(newPossible) != null) {
                 break;
             }
             else {
                 goright = goright + 1;
                 goup = goup + 1;
-                newPossible = new ChessPosition(goup + 1, goright + 1);
+                newPossible = new ChessPosition(goup, goright);
             }
         }
 
-        goleft = myColumn - 1;
-        godown = myRow - 1;
-        newPossible = new ChessPosition(godown + 1, goleft + 1);
-        while (onBoard(newPossible) && pieceCheck(board, newPossible)) {
-            //myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible, PieceType.BISHOP));
-            myMoves.add(new ChessMove((ChessPosition) myPosition, newPossible));
-            if (board.getPiece(newPossible) != null) {
-                break;
-            }
-            else {
-                godown = godown - 1;
-                goleft = goleft - 1;
-                newPossible = new ChessPosition(godown + 1, goleft + 1);
-            }
-        }
-
-        godown = myRow - 1;
-        goright = myColumn + 1;
-        newPossible = new ChessPosition(godown + 1, goright + 1);
-        while (onBoard(newPossible) && pieceCheck(board, newPossible)) {
-            //myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible, PieceType.BISHOP));
-            myMoves.add(new ChessMove((ChessPosition) myPosition, newPossible));
-            if (board.getPiece(newPossible) != null) {
-                break;
-            }
-            else {
-                godown = godown - 1;
-                goright = goright + 1;
-                newPossible = new ChessPosition(godown + 1, goright + 1);
-            }
-        }
-
-        goleft = myColumn - 1;
+        int goleft = myColumn - 1;
         goup = myRow + 1;
-        newPossible = new ChessPosition(goup + 1, goleft + 1);
+        newPossible = new ChessPosition(goup, goleft);
         while (onBoard(newPossible) && pieceCheck(board, newPossible)) {
-            //myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible, PieceType.BISHOP));
-            myMoves.add(new ChessMove((ChessPosition) myPosition, newPossible));
+            myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible, PieceType.BISHOP));
             if (board.getPiece(newPossible) != null) {
                 break;
             }
             else {
                 goleft = goleft - 1;
                 goup = goup + 1;
-                newPossible = new ChessPosition(goup + 1, goleft + 1);
+                newPossible = new ChessPosition(goup, goleft);
+            }
+        }
+
+        goleft = myColumn - 1;
+        int godown = myRow - 1;
+        newPossible = new ChessPosition(godown, goleft);
+        while (onBoard(newPossible) && pieceCheck(board, newPossible)) {
+            myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible, PieceType.BISHOP));
+            if (board.getPiece(newPossible) != null) {
+                break;
+            }
+            else {
+                godown = godown - 1;
+                goleft = goleft - 1;
+                newPossible = new ChessPosition(godown, goleft);
+            }
+        }
+
+        godown = myRow - 1;
+        goright = myColumn + 1;
+        newPossible = new ChessPosition(godown, goright);
+        while (onBoard(newPossible) && pieceCheck(board, newPossible)) {
+            myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible, PieceType.BISHOP));
+            if (board.getPiece(newPossible) != null) {
+                break;
+            }
+            else {
+                godown = godown - 1;
+                goright = goright + 1;
+                newPossible = new ChessPosition(godown, goright);
             }
         }
         //myMoves = protectKing(board, myMoves);

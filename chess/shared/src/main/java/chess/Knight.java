@@ -6,10 +6,8 @@ import java.util.Collection;
 public class Knight extends ChessPiece{
     public Knight(ChessGame.TeamColor teamColor) {
         super(teamColor, PieceType.KNIGHT);
-        System.out.println("Knight was created");
     }
 
-    @Override
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         //so, we know the board, and we can make moves based on where we are and the other pieces.
         //first let's start with getting to a place on the board that the knight could move
@@ -18,8 +16,8 @@ public class Knight extends ChessPiece{
         //how to store the moves? the order will never matter, but the number will vary for any piece
         ArrayList<ChessMove> myMoves = new ArrayList<ChessMove>();
 
-        int myColumn = myPosition.getColumn() + 1;
-        int myRow = myPosition.getRow() + 1;
+        int myColumn = myPosition.getColumn();
+        int myRow = myPosition.getRow();
         System.out.println("Accessing knight at (" + myRow + "," + myColumn + ")");
 
         ChessPosition newPossible = new ChessPosition(myRow + 1, myColumn + 2); //right upper

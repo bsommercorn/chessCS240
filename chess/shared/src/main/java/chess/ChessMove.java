@@ -62,11 +62,6 @@ public class ChessMove {
     }
 
     @Override
-    public String toString() {
-        return " to " + end.toString();
-    }
-
-    @Override
     public int hashCode() { //why doesn't this work???
         return Objects.hash(start, end, mypromotion);
     }
