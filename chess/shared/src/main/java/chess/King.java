@@ -6,13 +6,15 @@ import java.util.Collection;
 public class King extends ChessPiece{
     public King(ChessGame.TeamColor teamColor) {
         super(teamColor, PieceType.KING);
+        System.out.println("King was created");
     }
 
+    @Override
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         ArrayList<ChessMove> myMoves = new ArrayList<ChessMove>();
 
-        int myColumn = myPosition.getColumn();
-        int myRow = myPosition.getRow();
+        int myColumn = myPosition.getColumn() + 1;
+        int myRow = myPosition.getRow() + 1;
         //while we haven't hit the board or another piece, go right
         int goright = myColumn + 1;
         ChessPosition newPossible = new ChessPosition(myRow, goright);
