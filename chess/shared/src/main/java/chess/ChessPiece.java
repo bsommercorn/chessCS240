@@ -81,6 +81,51 @@ public class ChessPiece {
         return false;
     }
 
+    public ArrayList<ChessMove> protectKing(ChessBoard board, ArrayList<ChessMove> testList) { //stack overflow????
+        ArrayList<ChessMove> myMoves = new ArrayList<ChessMove>();
+        ChessPosition kingspot = null;
+        ChessBoard myboard = (ChessBoard) board;
+        if (myColor == ChessGame.TeamColor.WHITE) {
+            kingspot = (ChessPosition) myboard.getMyWhiteKing();
+        }
+        else {
+            kingspot = (ChessPosition) myboard.getMyBlackKing();
+        }
+        if (kingspot != null) {
+            King myKing = (King) myboard.getPiece(kingspot);
+            for (int i = 0; i < testList.size(); i++){
+                if (myColor == ChessGame.TeamColor.WHITE) {
+                    kingspot = (ChessPosition) myboard.getMyWhiteKing();
+                }
+                else {
+                    kingspot = (ChessPosition) myboard.getMyBlackKing();
+                }
+                ChessMove myMove = (ChessMove) testList.get(i);
+                myboard.removePiece(myMove.getStartPosition());
+                myboard.addPiece(myMove.getEndPosition(), this);
+                if (myColor == ChessGame.TeamColor.WHITE) { //kingspot moves if the king himself is the one moving
+                    kingspot = (ChessPosition) myboard.getMyWhiteKing();
+                }
+                else {
+                    kingspot = (ChessPosition) myboard.getMyBlackKing();
+                }
+                //if (!myKing.newkingCheck(myboard, kingspot)) {//shouldn't be the old kingspot if the king himself is moving
+                    myMoves.add(myMove);
+                //}
+                myboard.removePiece(myMove.getEndPosition());
+                ChessPiece restore = myboard.getLastCaptured();
+                if (restore != null) {
+                    myboard.addPiece(myMove.getEndPosition(), restore);
+                }
+                myboard.addPiece(myMove.getStartPosition(), this);
+            }
+            return myMoves;
+        }
+        else {
+            return testList;
+        }
+    }
+
     @Override
     public String toString() {
         String myoutput = "";

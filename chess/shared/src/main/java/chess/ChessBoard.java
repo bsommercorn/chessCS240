@@ -15,8 +15,21 @@ public class ChessBoard {
     ChessPosition myBlackKing = null;
     int pieceCount = 0;
 
+    ChessPiece lastcaptured = null;
+
     public ChessBoard() {
         
+    }
+
+    public ChessPosition getMyWhiteKing() {
+        return myWhiteKing;
+    }
+    public ChessPosition getMyBlackKing() {
+        return myBlackKing;
+    }
+
+    public ChessPiece getLastCaptured () {
+        return lastcaptured;
     }
 
     /**
@@ -26,10 +39,39 @@ public class ChessBoard {
      * @param piece    the piece to add
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
-        //myboard[position.getRow()][position.getColumn()] = piece;
-        myboard[position.getColumn()][position.getRow()] = piece;
-        //do nothing
-        //throw new RuntimeException("Not implemented");
+
+        pieceCount++;
+        lastcaptured = null;
+        if (piece.getPieceType() == ChessPiece.PieceType.KING){
+            if (piece.getTeamColor() == ChessGame.TeamColor.WHITE) {
+                myWhiteKing = position;
+            }
+            else {
+                myBlackKing = position;
+            }
+        }
+        ChessPiece mypos = myboard[position.getColumn()][position.getRow()];
+        if (mypos == null) { //this seems clunky. Is it wrong?
+            myboard[position.getColumn()][position.getRow()] = piece;
+            //System.out.println("added a piece at (" + position.getColumn() + "," + position.getRow() + ")");
+        }
+        else {
+            System.out.println("A piece was captured!");
+            pieceCount--;
+            lastcaptured = mypos;
+            myboard[position.getColumn()][position.getRow()] = piece;
+        }
+    }
+
+    public void removePiece(ChessPosition position) {
+        pieceCount--;
+        ChessPiece mypos = myboard[position.getColumn() - 1][position.getRow() - 1];
+        if (mypos != null) { //this seems clunky. Is it wrong?
+            myboard[position.getColumn() - 1][position.getRow() - 1] = null;
+        }
+        else {
+            //System.out.println("No piece here!");
+        }
     }
 
     /**
