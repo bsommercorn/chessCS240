@@ -13,6 +13,7 @@ public class Bishop extends ChessPiece {
         return ChessPiece.PieceType.BISHOP;
     }
 
+    @Override
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         ArrayList<ChessMove> myMoves = new ArrayList<ChessMove>();
 
@@ -91,6 +92,7 @@ public class Bishop extends ChessPiece {
         //actually do them on the board
         //see if they put the king in check, if they did, delete this move from the list
         //undo them on the board
+        System.out.println("myMoves was:" + myMoves.toString());
         return myMoves;
     }
 }
