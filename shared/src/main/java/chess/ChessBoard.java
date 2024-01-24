@@ -1,6 +1,7 @@
 package chess;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * A chessboard that can hold and rearrange chess pieces.
@@ -94,17 +95,11 @@ public class ChessBoard {
      * (How the game of chess normally starts)
      */
     public void resetBoard() {
+        myboard = new ChessPiece[8][8];
         for (int i = 0; i < 8; i++) {
             myboard[i][1] = new Pawn(ChessGame.TeamColor.WHITE);
 
             myboard[i][6] = new Pawn(ChessGame.TeamColor.BLACK);
-            //myboard[i][1] = pawn. //what is piecetype??
-            if (i > 1 && i < 6) { //might not be working right, double check later to fix plz
-                for (int j = 0; j < 8; j++) {
-                    myboard[j][i] = null;
-                }
-            }
-
         }
         myboard[0][0] = new Rook(ChessGame.TeamColor.WHITE);
         myboard[7][0] = new Rook(ChessGame.TeamColor.WHITE);
@@ -134,9 +129,10 @@ public class ChessBoard {
 
         pieceCount = 32;
 
-        System.out.println(this.toString());
+        //System.out.println(this.toString());
     }
 
+    /*
     @Override
     public String toString() {
         String myoutput = "chess.Board is: \n";
@@ -144,11 +140,11 @@ public class ChessBoard {
         for (int i = 7; i >= 0; i--) { //for every rank down from 8
             for (int j = 0; j < 8; j++) { //go across every file
                 if (whiteSquare) {
-                    myoutput = myoutput + "\u001b[48;5;15m";
+                    //myoutput = myoutput + "\u001b[48;5;15m";
                     whiteSquare = false;
                 }
                 else {
-                    myoutput = myoutput + "\u001b[48;5;43m"; //fix this color
+                    //myoutput = myoutput + "\u001b[48;5;43m"; //fix this color
                     whiteSquare = true;
                 }
                 if (myboard[j][i] != null) {
@@ -204,7 +200,31 @@ public class ChessBoard {
         for (int j = 0; j < 8; j++) {
             myoutput = myoutput + (j + 1) + "   ";
         }
-         */
+
         return myoutput;
+    }
+
+     */
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChessBoard that = (ChessBoard) o;
+        return Arrays.deepEquals(myboard, that.myboard);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(myWhiteKing, myBlackKing, pieceCount, lastcaptured);
+        result = 31 * result + Arrays.deepHashCode(myboard);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ChessBoard{" +
+                "myboard=" + Arrays.deepToString(myboard) +
+                '}';
     }
 }
