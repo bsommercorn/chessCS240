@@ -83,6 +83,12 @@ public class ChessBoard {
      * position
      */
     public ChessPiece getPiece(ChessPosition position) {
+        if (position.getColumn() < 0 || position.getColumn() >= 8) {
+            System.out.println("Out of bounds (Column error) Column was " + position.getColumn());
+        }
+        if (position.getRow() < 0 || position.getRow() >= 8) {
+            System.out.println("Out of bounds (Row error) Row was " + position.getRow());
+        }
         ChessPiece mypos = myboard[position.getColumn()][position.getRow()];
         if (mypos != null) { //this seems clunky. Is it wrong?
             return mypos;
@@ -132,7 +138,7 @@ public class ChessBoard {
         //System.out.println(this.toString());
     }
 
-    /*
+
     @Override
     public String toString() {
         String myoutput = "chess.Board is: \n";
@@ -140,11 +146,11 @@ public class ChessBoard {
         for (int i = 7; i >= 0; i--) { //for every rank down from 8
             for (int j = 0; j < 8; j++) { //go across every file
                 if (whiteSquare) {
-                    //myoutput = myoutput + "\u001b[48;5;15m";
+                    myoutput = myoutput + "\u001b[48;5;15m";
                     whiteSquare = false;
                 }
                 else {
-                    //myoutput = myoutput + "\u001b[48;5;43m"; //fix this color
+                    myoutput = myoutput + "\u001b[48;5;43m"; //fix this color
                     whiteSquare = true;
                 }
                 if (myboard[j][i] != null) {
@@ -172,11 +178,11 @@ public class ChessBoard {
         for (int i = 0; i <= 7; i++) { //for every rank up from 0
             for (int j = 7; j >= 0; j--) { //go across every file
                 if (whiteSquare) {
-                    //myoutput = myoutput + "\u001b[48;5;15m";
+                    myoutput = myoutput + "\u001b[48;5;15m";
                     whiteSquare = false;
                 }
                 else {
-                    //myoutput = myoutput + "\u001b[48;5;43m"; //fix this color
+                    myoutput = myoutput + "\u001b[48;5;43m"; //fix this color
                     whiteSquare = true;
                 }
                 if (myboard[j][i] != null) {
@@ -192,19 +198,22 @@ public class ChessBoard {
                     myoutput = myoutput + "    ";
                 }
             }
-            //myoutput = myoutput + "\u001b[48;5;235m\n"; //here is where we reset the background color so the board doesn't extend forever
+            myoutput = myoutput + "\u001b[48;5;235m"; //here is where we reset the background color so the board doesn't extend forever
             myoutput = myoutput + "\n";
             whiteSquare = !whiteSquare; //\e[0m
         }
+
         myoutput = myoutput + " ";
         for (int j = 0; j < 8; j++) {
             myoutput = myoutput + (j + 1) + "   ";
         }
 
+         */
+
         return myoutput;
     }
 
-     */
+
 
     @Override
     public boolean equals(Object o) {
@@ -220,11 +229,13 @@ public class ChessBoard {
         result = 31 * result + Arrays.deepHashCode(myboard);
         return result;
     }
-
+    /*
     @Override
     public String toString() {
         return "ChessBoard{" +
                 "myboard=" + Arrays.deepToString(myboard) +
                 '}';
     }
+
+     */
 }

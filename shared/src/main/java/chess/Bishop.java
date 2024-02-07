@@ -17,8 +17,8 @@ public class Bishop extends ChessPiece {
 
     @Override
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        System.out.println("Called Bishop's pieceMoves");
-        System.out.println(board.toString());
+        //System.out.println("Called Bishop's pieceMoves");
+        //System.out.println(board.toString());
         ArrayList<ChessMove> myMoves = new ArrayList<ChessMove>();
         //HashSet<ChessMove> myMoves = new HashSet<ChessMove>();
 

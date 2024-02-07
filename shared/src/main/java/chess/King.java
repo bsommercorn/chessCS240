@@ -97,10 +97,9 @@ public class King extends ChessPiece{
         return myMoves;
     }
 
-    /*
     public boolean newkingCheck(ChessBoard board, ChessPosition myPosition) {
-        int myColumn = myPosition.getColumn();
-        int myRow = myPosition.getRow();
+        int myColumn = myPosition.getColumn() + 1;
+        int myRow = myPosition.getRow() + 1;
         //while we haven't hit the board or another piece, go right
         int goright = myColumn + 1;
         ChessPosition newPossible = new ChessPosition(myRow, goright);
@@ -332,5 +331,8 @@ public class King extends ChessPiece{
         }
         return false;
     }
+
+    /*
+
     */
 }

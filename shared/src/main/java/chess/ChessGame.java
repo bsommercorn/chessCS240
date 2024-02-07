@@ -2,6 +2,7 @@ package chess;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * For a class that can manage a chess game, making moves on a board
@@ -66,6 +67,26 @@ public class ChessGame {
         //throw new RuntimeException("Not implemented");
     }
 
+    public ChessPiece getNewPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type){
+        //get an enum
+        //make a piece that matches that enum
+        switch (type) {
+            case PAWN:
+                return new Pawn(pieceColor);
+            case KNIGHT:
+                return new Knight(pieceColor);
+            case BISHOP:
+                return new Bishop(pieceColor);
+            case ROOK:
+                return new Rook(pieceColor);
+            case QUEEN:
+                return new Queen(pieceColor);
+            case KING:
+                return new King(pieceColor);
+        }
+        return null;
+    }
+
     /**
      * Makes a move in a chess game
      *
@@ -73,7 +94,110 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        //throw new RuntimeException("Not implemented");
+        ChessPiece activePiece = myboard.getPiece(move.getStartPosition()); //we need to test this
+        if (activePiece == null) {
+            throw new InvalidMoveException("No piece to move!");
+        }
+        if (whosTurn != null && whosTurn != activePiece.getTeamColor()) {
+            throw new InvalidMoveException("Not your turn!");
+        }
+        //System.out.println("chess.Piece found: " + activePiece.toString());
+        ArrayList<ChessMove> validmoves = (ArrayList<ChessMove>) activePiece.pieceMoves(myboard, move.getStartPosition());
+        boolean valid = false;
+        for (int i = 0; i < validmoves.size(); i++){ //this is infinite looping?
+            if (Objects.equals(validmoves.get(i).getEndPosition().toString(), move.getEndPosition().toString())) {
+                valid = true;
+            }//are move addresses being set incorrectly somehow???
+        }
+        if (valid) {
+            //if a pawn moves diagonally without capturing, it must be doing en passant
+            //therefore black must delete the pawn above it
+            //and white must delete the pawn below it
+            //if this piece moving is a pawn, and its column is going to change, check for en passant
+            if (activePiece.getPieceType() == ChessPiece.PieceType.PAWN) {
+                ChessPosition colcheck = move.getStartPosition();
+                ChessPosition passantcheck = move.getEndPosition();
+                if (passantcheck.getColumn() != colcheck.getColumn() && myboard.getPiece(passantcheck) == null) {
+                    if (activePiece.getTeamColor() == TeamColor.WHITE){
+                        ChessPosition enpassant = new ChessPosition(passantcheck.getRow() - 1 + 1,passantcheck.getColumn() + 1);
+                        myboard.removePiece(enpassant);
+                    }
+                    else {
+                        ChessPosition enpassant = new ChessPosition(passantcheck.getRow() + 1 + 1,passantcheck.getColumn() + 1);
+                        myboard.removePiece(enpassant);
+                    }
+                } //add turn timestamp for pawns so they only have 1 turn to do this
+
+                //if the pawn is at row 7 for white or 2 for black, then it can promote
+                //get the promotion type from the move
+            }
+
+            //before making a move, make a copy of the board so that it's reversible if the king is in check.
+            myboard.removePiece(move.getStartPosition());
+            myboard.addPiece(move.getEndPosition(), activePiece);
+            if (activePiece.getPieceType() == ChessPiece.PieceType.PAWN) {
+                ChessPosition rankcheck = (ChessPosition) move.getEndPosition();
+                if (activePiece.getTeamColor() == TeamColor.WHITE && rankcheck.getRow() == 7){ //row adjustment
+                    if (move.getPromotionPiece() != null) {
+                        ChessPiece promoteMe = (ChessPiece) getNewPiece(TeamColor.WHITE, move.getPromotionPiece());
+                        myboard.addPiece(move.getEndPosition(), promoteMe);
+                    }
+                    /*
+                    else {
+                        throw new InvalidMoveException("White Pawn was not promoted");
+                    }
+
+                     */
+                }
+                else if (activePiece.getTeamColor() == TeamColor.BLACK && rankcheck.getRow() == 0){
+                    if (move.getPromotionPiece() != null) {
+                        ChessPiece promoteMe = (ChessPiece) getNewPiece(TeamColor.BLACK, move.getPromotionPiece());
+                        myboard.addPiece(move.getEndPosition(), promoteMe);
+                    }
+                    /*
+                    else {
+                        throw new InvalidMoveException("Black Pawn was not promoted");
+                    }
+
+                     */
+                }
+            }
+
+            if (activePiece.getTeamColor() == ChessGame.TeamColor.WHITE) {
+                setTeamTurn(ChessGame.TeamColor.BLACK); //Set the turn for the next color team
+                for (int i = 0; i < 8; i++) {
+                    ChessPosition nopassant = new ChessPosition(5 + 1,i + 1); //along one row, remove en passant from all pawns
+                    ChessPiece mypawn = (ChessPiece) myboard.getPiece(nopassant);
+                    if (mypawn != null && mypawn.getPieceType() == ChessPiece.PieceType.PAWN) {
+                        ((Pawn)mypawn).noPassant();
+                    }
+                }
+            }
+            else {
+                setTeamTurn(ChessGame.TeamColor.WHITE);
+                for (int i = 0; i < 8; i++) {
+                    ChessPosition nopassant = new ChessPosition(4 + 1,i + 1);
+                    ChessPiece mypawn = (ChessPiece) myboard.getPiece(nopassant);
+                    if (mypawn != null && mypawn.getPieceType() == ChessPiece.PieceType.PAWN) {
+                        ((Pawn)mypawn).noPassant();
+                    }
+                }
+            }
+
+            //if the king is in check at the end of this move, reverse it and call it invalid
+            //this will be nice because then you don't have to worry about a lot of check possibilities.
+            //like checking to see if you killed or blocked the piece, or if a discovered attack happened.
+            //this would do it automatically.
+
+            //worry about checkmate later!
+
+            //after a move has been made, we could loop through all pawns on that team and nullify their en passant
+        }
+        else {
+            throw new InvalidMoveException("chess.Piece cannot move to " + move.getEndPosition().toString());
+        }
+        System.out.println("Valid move made!");
+        System.out.println(myboard.toString());
     }
 
     /**
