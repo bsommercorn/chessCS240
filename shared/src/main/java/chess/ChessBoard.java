@@ -32,6 +32,9 @@ public class ChessBoard {
     public ChessPiece getLastCaptured () {
         return lastcaptured;
     }
+    public int getPieceCount() {
+        return pieceCount;
+    }
 
     /**
      * Adds a chess piece to the chessboard
@@ -85,9 +88,11 @@ public class ChessBoard {
     public ChessPiece getPiece(ChessPosition position) {
         if (position.getColumn() < 0 || position.getColumn() >= 8) {
             System.out.println("Out of bounds (Column error) Column was " + position.getColumn());
+            //return null;
         }
         if (position.getRow() < 0 || position.getRow() >= 8) {
             System.out.println("Out of bounds (Row error) Row was " + position.getRow());
+            //return null;
         }
         ChessPiece mypos = myboard[position.getColumn()][position.getRow()];
         if (mypos != null) { //this seems clunky. Is it wrong?

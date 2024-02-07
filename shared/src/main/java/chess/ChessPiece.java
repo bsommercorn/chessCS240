@@ -112,9 +112,9 @@ public class ChessPiece {
                 else {
                     kingspot = (ChessPosition) myboard.getMyBlackKing();
                 }
-                //if (!myKing.newkingCheck(myboard, kingspot)) {//shouldn't be the old kingspot if the king himself is moving
+                if (!myKing.newkingCheck(myboard, kingspot)) {//shouldn't be the old kingspot if the king himself is moving
                 myMoves.add(myMove);
-                //}
+                }
                 myboard.removePiece(myMove.getEndPosition());
                 ChessPiece restore = myboard.getLastCaptured();
                 if (restore != null) {

@@ -9,6 +9,11 @@ public class King extends ChessPiece{
         System.out.println("King was created");
     }
 
+    public boolean kingCheck(ChessBoard board, ChessPosition myPosition) { //might need to make this public
+        //apparently, we get a stack overflow if we try to check all enemy pieces for king-capturing moves
+        return false;
+    }
+
     @Override
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         ArrayList<ChessMove> myMoves = new ArrayList<ChessMove>();
@@ -19,69 +24,69 @@ public class King extends ChessPiece{
         int goright = myColumn + 1;
         ChessPosition newPossible = new ChessPosition(myRow, goright);
         if (onBoard(newPossible) && pieceCheck(board, newPossible)) {
-            //if (!kingCheck(board, newPossible)) {
+            if (!newkingCheck(board, newPossible)) {
             myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
-            //}
+            }
         }
 
         int goleft = myColumn - 1;
         newPossible = new ChessPosition(myRow, goleft);
         if (onBoard(newPossible) && pieceCheck(board, newPossible)) {
-            //if (!kingCheck(board, newPossible)) {
+            if (!newkingCheck(board, newPossible)) {
             myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
-            //}
+            }
         }
 
         int goup = myRow + 1;
         newPossible = new ChessPosition(goup, myColumn);
         if (onBoard(newPossible) && pieceCheck(board, newPossible)) {
-            //if (!kingCheck(board, newPossible)) {
+            if (!newkingCheck(board, newPossible)) {
             myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
-            //}
+            }
         }
 
         int godown = myRow - 1;
         newPossible = new ChessPosition(godown, myColumn);
         if (onBoard(newPossible) && pieceCheck(board, newPossible)) {
-            //if (!kingCheck(board, newPossible)) {
+            if (!newkingCheck(board, newPossible)) {
             myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
-            //}
+            }
         }
 
         goright = myColumn + 1;
         goup = myRow + 1;
         newPossible = new ChessPosition(goup, goright);
         if (onBoard(newPossible) && pieceCheck(board, newPossible)) {
-            //if (!kingCheck(board, newPossible)) {
+            if (!newkingCheck(board, newPossible)) {
             myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
-            //}
+            }
         }
 
         goleft = myColumn - 1;
         goup = myRow + 1;
         newPossible = new ChessPosition(goup, goleft);
         if (onBoard(newPossible) && pieceCheck(board, newPossible)) {
-            //if (!kingCheck(board, newPossible)) {
+            if (!newkingCheck(board, newPossible)) {
             myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
-            //}
+            }
         }
 
         goleft = myColumn - 1;
         godown = myRow - 1;
         newPossible = new ChessPosition(godown, goleft);
         if (onBoard(newPossible) && pieceCheck(board, newPossible)) {
-            //if (!kingCheck(board, newPossible)) {
+            if (!newkingCheck(board, newPossible)) {
             myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
-            //}
+            }
         }
 
         godown = myRow - 1;
         goright = myColumn + 1;
         newPossible = new ChessPosition(godown, goright);
         if (onBoard(newPossible) && pieceCheck(board, newPossible)) {
-            //if (!kingCheck(board, newPossible)) {
+            if (!newkingCheck(board, newPossible)) {
             myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
-            //}
+            }
         }
         //before adding a move, check for threats
         //check the knight squares for knights (at that destination)
@@ -103,9 +108,12 @@ public class King extends ChessPiece{
         //while we haven't hit the board or another piece, go right
         int goright = myColumn + 1;
         ChessPosition newPossible = new ChessPosition(myRow, goright);
-        ChessPiece threat = board.getPiece(newPossible);
-        if (threat != null && (threat.getPieceType() == PieceType.KING)) { //there was an enemy piece
-            return true;
+        ChessPiece threat = null;
+        if (onBoard(newPossible)) {
+            threat = board.getPiece(newPossible);
+            if (threat != null && (threat.getPieceType() == PieceType.KING)) { //there was an enemy piece
+                return true;
+            }
         }
         while (onBoard(newPossible) && pieceCheck(board, newPossible)) { //friendly pieces return false for pieceCheck
             //myMoves.add(new Move((Position) myPosition,newPossible));
@@ -120,9 +128,11 @@ public class King extends ChessPiece{
         }
         int goleft = myColumn - 1;
         newPossible = new ChessPosition(myRow, goleft);
-        threat = board.getPiece(newPossible);
-        if (threat != null && (threat.getPieceType() == PieceType.KING)) { //there was an enemy piece
-            return true;
+        if (onBoard(newPossible)) {
+            threat = board.getPiece(newPossible);
+            if (threat != null && (threat.getPieceType() == PieceType.KING)) { //there was an enemy piece
+                return true;
+            }
         }
         while (onBoard(newPossible) && pieceCheck(board, newPossible)) {
             threat = board.getPiece(newPossible);
@@ -137,9 +147,11 @@ public class King extends ChessPiece{
 
         int goup = myRow + 1;
         newPossible = new ChessPosition(goup, myColumn);
-        threat = board.getPiece(newPossible);
-        if (threat != null && (threat.getPieceType() == PieceType.KING)) { //there was an enemy piece
-            return true;
+        if (onBoard(newPossible)) {
+            threat = board.getPiece(newPossible);
+            if (threat != null && (threat.getPieceType() == PieceType.KING)) { //there was an enemy piece
+                return true;
+            }
         }
         while (onBoard(newPossible) && pieceCheck(board, newPossible)) {
             threat = board.getPiece(newPossible);
@@ -154,9 +166,11 @@ public class King extends ChessPiece{
 
         int godown = myRow - 1;
         newPossible = new ChessPosition(godown, myColumn);
-        threat = board.getPiece(newPossible);
-        if (threat != null && (threat.getPieceType() == PieceType.KING)) { //there was an enemy piece
-            return true;
+        if (onBoard(newPossible)) {
+            threat = board.getPiece(newPossible);
+            if (threat != null && (threat.getPieceType() == PieceType.KING)) { //there was an enemy piece
+                return true;
+            }
         }
         while (onBoard(newPossible) && pieceCheck(board, newPossible)) {
             threat = board.getPiece(newPossible);
@@ -172,9 +186,11 @@ public class King extends ChessPiece{
         goright = myColumn + 1;
         goup = myRow + 1;
         newPossible = new ChessPosition(goup, goright);
-        threat = board.getPiece(newPossible);
-        if (threat != null && (threat.getPieceType() == PieceType.KING)) { //there was an enemy piece
-            return true;
+        if (onBoard(newPossible)) {
+            threat = board.getPiece(newPossible);
+            if (threat != null && (threat.getPieceType() == PieceType.KING)) { //there was an enemy piece
+                return true;
+            }
         }
         while (onBoard(newPossible) && pieceCheck(board, newPossible)) {
             threat = board.getPiece(newPossible);
@@ -191,9 +207,11 @@ public class King extends ChessPiece{
         goleft = myColumn - 1;
         goup = myRow + 1;
         newPossible = new ChessPosition(goup, goleft);
-        threat = board.getPiece(newPossible);
-        if (threat != null && (threat.getPieceType() == PieceType.KING)) { //there was an enemy piece
-            return true;
+        if (onBoard(newPossible)) {
+            threat = board.getPiece(newPossible);
+            if (threat != null && (threat.getPieceType() == PieceType.KING)) { //there was an enemy piece
+                return true;
+            }
         }
         while (onBoard(newPossible) && pieceCheck(board, newPossible)) {
             threat = board.getPiece(newPossible);
@@ -210,9 +228,11 @@ public class King extends ChessPiece{
         goleft = myColumn - 1;
         godown = myRow - 1;
         newPossible = new ChessPosition(godown, goleft);
-        threat = board.getPiece(newPossible);
-        if (threat != null && (threat.getPieceType() == PieceType.KING)) { //there was an enemy piece
-            return true;
+        if (onBoard(newPossible)) {
+            threat = board.getPiece(newPossible);
+            if (threat != null && (threat.getPieceType() == PieceType.KING)) { //there was an enemy piece
+                return true;
+            }
         }
         while (onBoard(newPossible) && pieceCheck(board, newPossible)) {
             threat = board.getPiece(newPossible);
@@ -229,9 +249,11 @@ public class King extends ChessPiece{
         godown = myRow - 1;
         goright = myColumn + 1;
         newPossible = new ChessPosition(godown, goright);
-        threat = board.getPiece(newPossible);
-        if (threat != null && (threat.getPieceType() == PieceType.KING)) { //there was an enemy piece
-            return true;
+        if (onBoard(newPossible)) {
+            threat = board.getPiece(newPossible);
+            if (threat != null && (threat.getPieceType() == PieceType.KING)) { //there was an enemy piece
+                return true;
+            }
         }
         while (onBoard(newPossible) && pieceCheck(board, newPossible)) {
             threat = board.getPiece(newPossible);

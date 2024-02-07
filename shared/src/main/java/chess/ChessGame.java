@@ -59,11 +59,11 @@ public class ChessGame {
             return null;
         }
         ArrayList<ChessMove> testList = (ArrayList<ChessMove>) activePiece.pieceMoves(myboard, startPosition);
-        //ArrayList<ChessMove> validList = ((ChessPiece)activePiece).protectKing(myboard, testList);
+        ArrayList<ChessMove> validList = ((ChessPiece)activePiece).protectKing(myboard, testList);
 
         //System.out.println("chess.Piece found: " + activePiece.toString());
-        return testList;
-        //return validList;
+        //return testList;
+        return validList;
         //throw new RuntimeException("Not implemented");
     }
 
@@ -207,8 +207,28 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
+        ChessPosition kingspot = null;
+        if (teamColor == TeamColor.WHITE) {
+            kingspot = (ChessPosition) myboard.getMyWhiteKing();
+        }
+        else {
+            kingspot = (ChessPosition) myboard.getMyBlackKing();
+        }
+        King myKing = (King) myboard.getPiece(kingspot);
+        if (myKing.newkingCheck(myboard, kingspot)) {
+            System.out.println("The " + teamColor + " King is in Check!");
+            return true;
+        }
+        //find the king, have him see if he is in check
+        //if so, say yes.
+        //this can't simply check the piece that just moved, because of discovered attacks
+        //the king only has to check parallels and diagonals, as well as knight spaces to see if he is in check
+        //or, you can do that to see if any position is threatened by an enemy piece and therefore in check.
+        //ask the board if the specified color's king is in check
+
+        //if they are in check, no piece is allowed to move unless it blocks the king
+        //or if it kills the piece causing the check
         return false;
-        //throw new RuntimeException("Not implemented");
     }
 
     /**
@@ -218,8 +238,56 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
-        return false;
-        //throw new RuntimeException("Not implemented");
+        if (!isInCheck(teamColor)) {
+            return false;
+        }
+        ChessPosition kingspot = null;
+        if (teamColor == TeamColor.WHITE) {
+            kingspot = (ChessPosition) myboard.getMyWhiteKing();
+        }
+        else {
+            kingspot = (ChessPosition) myboard.getMyBlackKing();
+        }
+        King myKing = (King) myboard.getPiece(kingspot);
+        ArrayList<ChessMove> validmoves = (ArrayList<ChessMove>) this.validMoves(kingspot);
+        if (validmoves.size() > 0) {
+            System.out.println("King not Checkmated Yet!");
+            System.out.println("Number of moves for this King is " + validmoves.size());
+            for (int i = 0; i < validmoves.size(); i++) {
+                System.out.print(validmoves.get(i).getEndPosition().toString() + " ");
+            }
+            return false;
+        }
+        /*
+        Board rescueboard = new Board(); //does this make a copy or does it edit???
+        for (int i = 1; i <= 8; i++) {
+            for (int j = 1; j <= 8; j++) {
+                Position copyspot = new Position(i,j);
+                if (myboard.getPiece(copyspot) != null) {
+                    rescueboard.addPiece(copyspot, myboard.getPiece(copyspot));
+                }
+            }
+        }
+        for (int i = 1; i <= 8; i++) {
+            for (int j = 1; j <= 8; j++) {
+                Position rescuespot = new Position(i,j);
+                ChessPiece rescuer = rescueboard.getPiece(rescuespot);
+                if (rescuer != null && rescuer.getTeamColor() == teamColor) {
+                    ArrayList<ChessMove> rescuemoves = (ArrayList<ChessMove>) myKing.pieceMoves(rescueboard, kingspot);
+
+                }
+            }
+        }
+         */
+
+        //iterate through all friendly pieces, get all valid moves
+        //test those valid moves on a practice board
+        //after each move, check if the king is in danger
+        //if not, return false
+        //if yes, keep going to the next move
+        //if we reach the end of the list and haven't returned false, return true!
+        System.out.println("The " + teamColor + " King has been Checkmated!");
+        return true;
     }
 
     /**
@@ -230,8 +298,32 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
-        return false;
-        //throw new RuntimeException("Not implemented");
+        if (myboard.getPieceCount() == 2 && myboard.getMyWhiteKing() != null && myboard.getMyBlackKing() != null) {
+            return true;
+        }
+        if (isInCheck(teamColor)) {
+            return false;
+        }
+        ChessPosition kingspot = null;
+        if (teamColor == TeamColor.WHITE) {
+            kingspot = (ChessPosition) myboard.getMyWhiteKing();
+        }
+        else {
+            kingspot = (ChessPosition) myboard.getMyBlackKing();
+        }
+        King myKing = (King) myboard.getPiece(kingspot);
+        ArrayList<ChessMove> validmoves = (ArrayList<ChessMove>) this.validMoves(kingspot);
+        if (validmoves.size() > 0) {
+            System.out.println("King not Checkmated Yet!");
+            System.out.println("Number of moves for this King is " + validmoves.size());
+            for (int i = 0; i < validmoves.size(); i++) {
+                System.out.print(validmoves.get(i).getEndPosition().toString() + " ");
+            }
+            return false;
+        }
+        //if there are only two kings, return true
+        //if no pieces have any valid moves and the king isn't in check, return true
+        return true;
     }
 
     /**
