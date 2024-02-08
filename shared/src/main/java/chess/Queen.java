@@ -126,7 +126,7 @@ public class Queen extends ChessPiece{
                 newPossible = new ChessPosition(godown, goright);
             }
         }
-        myMoves = protectKing(board, myMoves);
+        //myMoves = protectKing(board, myMoves);
         return myMoves;
     }
 }

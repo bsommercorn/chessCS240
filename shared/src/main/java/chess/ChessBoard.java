@@ -43,16 +43,9 @@ public class ChessBoard {
      * @param piece    the piece to add
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
+        pieceCount++;
         lastcaptured = null;
         System.out.println("Adding " + piece.getPieceType() + " to position (" + (position.getColumn() + 1) + ", " + (position.getRow() + 1) + ")");
-        if (piece.getPieceType() == ChessPiece.PieceType.KING){
-            if (piece.getTeamColor() == ChessGame.TeamColor.WHITE) {
-                myWhiteKing = position;
-            }
-            else {
-                myBlackKing = position;
-            }
-        }
         if (this.getPiece(position) != null) {
             System.out.println("A piece was captured!");
             pieceCount--;
@@ -61,6 +54,12 @@ public class ChessBoard {
         switch (piece.getPieceType()) {
             case KING:
                 myboard[position.getColumn()][position.getRow()] = new King(piece.getTeamColor());
+                if (piece.getTeamColor() == ChessGame.TeamColor.WHITE) { //track king locations always
+                    myWhiteKing = position;
+                }
+                else {
+                    myBlackKing = position;
+                }
                 break;
             case QUEEN:
                 myboard[position.getColumn()][position.getRow()] = new Queen(piece.getTeamColor());
@@ -77,6 +76,18 @@ public class ChessBoard {
             case PAWN:
                 myboard[position.getColumn()][position.getRow()] = new Pawn(piece.getTeamColor());
                 break;
+        }
+        if (myWhiteKing != null) {
+            System.out.println("White kingspot is " + myWhiteKing.toString());
+        }
+        else {
+            System.out.println("There is no white king");
+        }
+        if (myBlackKing != null) {
+            System.out.println("Black kingspot is " + myBlackKing.toString());
+        }
+        else {
+            System.out.println("There is no black king");
         }
     }
 
@@ -141,7 +152,7 @@ public class ChessBoard {
 
         myboard[3][0] = new Queen(ChessGame.TeamColor.WHITE);
         myboard[4][0] = new King(ChessGame.TeamColor.WHITE);
-        //myWhiteKing = new ChessPosition(1,5);
+        myWhiteKing = new ChessPosition(1,5);
 
         myboard[0][7] = new Rook(ChessGame.TeamColor.BLACK);
         myboard[7][7] = new Rook(ChessGame.TeamColor.BLACK);
@@ -154,7 +165,7 @@ public class ChessBoard {
 
         myboard[3][7] = new Queen(ChessGame.TeamColor.BLACK);
         myboard[4][7] = new King(ChessGame.TeamColor.BLACK);
-        //myBlackKing = new ChessPosition(8,5);
+        myBlackKing = new ChessPosition(8,5);
 
         pieceCount = 32;
 

@@ -58,10 +58,10 @@ public class ChessGame {
             System.out.println("There was no piece here!");
             return null;
         }
+        System.out.println("chess.Piece found and checked for moves: " + activePiece.toString() + "***********");
         ArrayList<ChessMove> testList = (ArrayList<ChessMove>) activePiece.pieceMoves(myboard, startPosition);
         ArrayList<ChessMove> validList = ((ChessPiece)activePiece).protectKing(myboard, testList);
 
-        System.out.println("chess.Piece found and checked for moves: " + activePiece.toString());
         //return testList;
         System.out.println("Board state is: " + myboard.toString());
         return validList;
@@ -208,7 +208,8 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
-        System.out.println("Beginning to check for check");
+        System.out.println("Beginning to check for check in " + teamColor.toString());
+        System.out.println("Board state is : " + myboard.toString());
         ChessPosition kingspot = null;
         if (teamColor == TeamColor.WHITE) {
             kingspot = (ChessPosition) myboard.getMyWhiteKing();

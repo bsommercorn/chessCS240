@@ -85,9 +85,10 @@ public class ChessPiece {
     }
 
     public ArrayList<ChessMove> protectKing(ChessBoard board, ArrayList<ChessMove> testList) { //stack overflow????
+        System.out.println("Protecting king is starting. Board state is: " + board.toString());
         ArrayList<ChessMove> myMoves = new ArrayList<ChessMove>();
         ChessPosition kingspot = null;
-        ChessBoard myboard = (ChessBoard) board;
+        ChessBoard myboard = (ChessBoard) board; //check to see if this makes a deep copy or not????
         if (myColor == ChessGame.TeamColor.WHITE) {
             kingspot = (ChessPosition) myboard.getMyWhiteKing();
         }
@@ -125,6 +126,7 @@ public class ChessPiece {
             return myMoves;
         }
         else {
+            System.out.println("No king of that color on the board");
             return testList;
         }
     }
