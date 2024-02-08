@@ -61,8 +61,9 @@ public class ChessGame {
         ArrayList<ChessMove> testList = (ArrayList<ChessMove>) activePiece.pieceMoves(myboard, startPosition);
         ArrayList<ChessMove> validList = ((ChessPiece)activePiece).protectKing(myboard, testList);
 
-        //System.out.println("chess.Piece found: " + activePiece.toString());
+        System.out.println("chess.Piece found and checked for moves: " + activePiece.toString());
         //return testList;
+        System.out.println("Board state is: " + myboard.toString());
         return validList;
         //throw new RuntimeException("Not implemented");
     }
@@ -95,7 +96,7 @@ public class ChessGame {
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
         ChessPiece activePiece = myboard.getPiece(move.getStartPosition()); //we need to test this
-        if (activePiece == null) {
+        if (activePiece == null) { //is this not working???
             throw new InvalidMoveException("No piece to move!");
         }
         if (whosTurn != null && whosTurn != activePiece.getTeamColor()) {
@@ -207,6 +208,7 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
+        System.out.println("Beginning to check for check");
         ChessPosition kingspot = null;
         if (teamColor == TeamColor.WHITE) {
             kingspot = (ChessPosition) myboard.getMyWhiteKing();
@@ -215,6 +217,10 @@ public class ChessGame {
             kingspot = (ChessPosition) myboard.getMyBlackKing();
         }
         King myKing = (King) myboard.getPiece(kingspot);
+        if (myKing == null) {
+            System.out.println("There was no king found, he cannot be in check");
+            return false;
+        }
         if (myKing.newkingCheck(myboard, kingspot)) {
             System.out.println("The " + teamColor + " King is in Check!");
             return true;
@@ -258,6 +264,16 @@ public class ChessGame {
             }
             return false;
         }
+        //check all other pieces for valid moves
+        for (int i = 0; i < 8; i++) { //for every rank down from 8
+            for (int j = 0; j < 8; j++) { //go across every file
+                ChessPosition otherPiece = new ChessPosition(i + 1,j + 1);
+                validmoves = (ArrayList<ChessMove>) this.validMoves(otherPiece);
+                if (myboard.getPiece(otherPiece) != null && myboard.getPiece(otherPiece).getTeamColor() == teamColor && validmoves != null && validmoves.size() > 0) {
+                    return false;
+                }
+            }
+        }
         /*
         Board rescueboard = new Board(); //does this make a copy or does it edit???
         for (int i = 1; i <= 8; i++) {
@@ -298,6 +314,7 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
+        System.out.println("Stalemate check, board is " + myboard.toString());
         if (myboard.getPieceCount() == 2 && myboard.getMyWhiteKing() != null && myboard.getMyBlackKing() != null) {
             return true;
         }
@@ -320,6 +337,16 @@ public class ChessGame {
                 System.out.print(validmoves.get(i).getEndPosition().toString() + " ");
             }
             return false;
+        }
+        //check all other pieces for valid moves
+        for (int i = 0; i < 8; i++) { //for every rank down from 8
+            for (int j = 0; j < 8; j++) { //go across every file
+                ChessPosition otherPiece = new ChessPosition(i + 1,j + 1);
+                validmoves = (ArrayList<ChessMove>) this.validMoves(otherPiece);
+                if (myboard.getPiece(otherPiece) != null && myboard.getPiece(otherPiece).getTeamColor() == teamColor && validmoves != null && validmoves.size() > 0) {
+                    return false;
+                }
+            }
         }
         //if there are only two kings, return true
         //if no pieces have any valid moves and the king isn't in check, return true

@@ -23,6 +23,119 @@ public class Pawn extends ChessPiece {
     }
 
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
+        ArrayList<ChessMove> myMoves = new ArrayList<>();
+
+        int myRow = myPosition.getRow() + 1;
+        int myCol = myPosition.getColumn() + 1;
+
+        int goup = myRow + 1;
+        int godown = myRow - 1;
+        int goleft = myCol - 1;
+        int goright = myCol + 1;
+
+        ChessPosition newpossible;
+
+        //split into colors
+        //black only moves down, white only moves up
+        //on starting row, can move forward twice
+        //black checks down diagonals for captures, white checks up diagonals
+        //on second row, black can promote, on second to last row, white can promote
+
+        if (myColor == ChessGame.TeamColor.WHITE) {
+            newpossible = new ChessPosition(goup,myCol); //single up only
+            if (onBoard(newpossible) && board.getPiece(newpossible) == null) {
+                if (myRow == 7) { //check for promotion
+                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.KNIGHT));
+                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.BISHOP));
+                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.ROOK));
+                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.QUEEN));
+                }
+                else {
+                    myMoves.add(new ChessMove(myPosition, newpossible));
+                    if (myRow == 2) { //check for double
+                        newpossible = new ChessPosition(goup + 1,myCol);
+                        if (onBoard(newpossible) && board.getPiece(newpossible) == null) {
+                            myMoves.add(new ChessMove(myPosition, newpossible));
+                        }
+                    }
+                }
+            }
+            newpossible = new ChessPosition(goup,goright); //diagonal attack right
+            if (onBoard(newpossible) && pieceCheck(board, newpossible) && board.getPiece(newpossible) != null) {
+                if (myRow == 7) { //check for promotion
+                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.KNIGHT));
+                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.BISHOP));
+                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.ROOK));
+                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.QUEEN));
+                }
+                else {
+                    myMoves.add(new ChessMove(myPosition, newpossible));
+                }
+            }
+            newpossible = new ChessPosition(goup,goleft); //diagonal attack left
+            if (onBoard(newpossible) && pieceCheck(board, newpossible) && board.getPiece(newpossible) != null) {
+                if (myRow == 7) { //check for promotion
+                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.KNIGHT));
+                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.BISHOP));
+                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.ROOK));
+                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.QUEEN));
+                }
+                else {
+                    myMoves.add(new ChessMove(myPosition, newpossible));
+                }
+            }
+        }
+        else if (myColor == ChessGame.TeamColor.BLACK){
+            newpossible = new ChessPosition(godown,myCol); //single down only
+            if (onBoard(newpossible) && board.getPiece(newpossible) == null) {
+                if (myRow == 2) { //check for promotion
+                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.KNIGHT));
+                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.BISHOP));
+                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.ROOK));
+                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.QUEEN));
+                }
+                else {
+                    myMoves.add(new ChessMove(myPosition, newpossible));
+                    if (myRow == 7) { //check for double
+                        newpossible = new ChessPosition(godown - 1,myCol);
+                        if (onBoard(newpossible) && board.getPiece(newpossible) == null) {
+                            myMoves.add(new ChessMove(myPosition, newpossible));
+                        }
+                    }
+                }
+            }
+            newpossible = new ChessPosition(godown,goright); //diagonal attack right
+            if (onBoard(newpossible) && pieceCheck(board, newpossible) && board.getPiece(newpossible) != null) {
+                if (myRow == 2) { //check for promotion
+                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.KNIGHT));
+                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.BISHOP));
+                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.ROOK));
+                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.QUEEN));
+                }
+                else {
+                    myMoves.add(new ChessMove(myPosition, newpossible));
+                }
+            }
+            newpossible = new ChessPosition(godown,goleft); //diagonal attack left
+            if (onBoard(newpossible) && pieceCheck(board, newpossible) && board.getPiece(newpossible) != null) {
+                if (myRow == 2) { //check for promotion
+                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.KNIGHT));
+                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.BISHOP));
+                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.ROOK));
+                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.QUEEN));
+                }
+                else {
+                    myMoves.add(new ChessMove(myPosition, newpossible));
+                }
+            }
+        }
+
+        return myMoves;
+    }
+}
+
+    /*
+    public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         ArrayList<ChessMove> myMoves = new ArrayList<ChessMove>();
 
         int myColumn = myPosition.getColumn() + 1;
@@ -204,3 +317,5 @@ public class Pawn extends ChessPiece {
         return myMoves;
     }
 }
+
+     */

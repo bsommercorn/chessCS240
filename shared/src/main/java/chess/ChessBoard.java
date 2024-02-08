@@ -43,7 +43,21 @@ public class ChessBoard {
      * @param piece    the piece to add
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
+        lastcaptured = null;
         System.out.println("Adding " + piece.getPieceType() + " to position (" + (position.getColumn() + 1) + ", " + (position.getRow() + 1) + ")");
+        if (piece.getPieceType() == ChessPiece.PieceType.KING){
+            if (piece.getTeamColor() == ChessGame.TeamColor.WHITE) {
+                myWhiteKing = position;
+            }
+            else {
+                myBlackKing = position;
+            }
+        }
+        if (this.getPiece(position) != null) {
+            System.out.println("A piece was captured!");
+            pieceCount--;
+            lastcaptured = this.getPiece(position);
+        }
         switch (piece.getPieceType()) {
             case KING:
                 myboard[position.getColumn()][position.getRow()] = new King(piece.getTeamColor());
@@ -86,13 +100,17 @@ public class ChessBoard {
      * position
      */
     public ChessPiece getPiece(ChessPosition position) {
+        if (position == null) {
+            System.out.println("No position provided!");
+            return null;
+        }
         if (position.getColumn() < 0 || position.getColumn() >= 8) {
             System.out.println("Out of bounds (Column error) Column was " + position.getColumn());
             //return null;
         }
         if (position.getRow() < 0 || position.getRow() >= 8) {
             System.out.println("Out of bounds (Row error) Row was " + position.getRow());
-            //return null;
+            //throw new InvalidMoveException("Out of bounds!");
         }
         ChessPiece mypos = myboard[position.getColumn()][position.getRow()];
         if (mypos != null) { //this seems clunky. Is it wrong?

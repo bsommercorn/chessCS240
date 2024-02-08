@@ -24,69 +24,69 @@ public class King extends ChessPiece{
         int goright = myColumn + 1;
         ChessPosition newPossible = new ChessPosition(myRow, goright);
         if (onBoard(newPossible) && pieceCheck(board, newPossible)) {
-            if (!newkingCheck(board, newPossible)) {
+            //if (!newkingCheck(board, newPossible)) {
             myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
-            }
+            //}
         }
 
         int goleft = myColumn - 1;
         newPossible = new ChessPosition(myRow, goleft);
         if (onBoard(newPossible) && pieceCheck(board, newPossible)) {
-            if (!newkingCheck(board, newPossible)) {
+            //if (!newkingCheck(board, newPossible)) {
             myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
-            }
+            //}
         }
 
         int goup = myRow + 1;
         newPossible = new ChessPosition(goup, myColumn);
         if (onBoard(newPossible) && pieceCheck(board, newPossible)) {
-            if (!newkingCheck(board, newPossible)) {
+            //if (!newkingCheck(board, newPossible)) {
             myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
-            }
+            //}
         }
 
         int godown = myRow - 1;
         newPossible = new ChessPosition(godown, myColumn);
         if (onBoard(newPossible) && pieceCheck(board, newPossible)) {
-            if (!newkingCheck(board, newPossible)) {
+            //if (!newkingCheck(board, newPossible)) {
             myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
-            }
+            //}
         }
 
         goright = myColumn + 1;
         goup = myRow + 1;
         newPossible = new ChessPosition(goup, goright);
         if (onBoard(newPossible) && pieceCheck(board, newPossible)) {
-            if (!newkingCheck(board, newPossible)) {
+            //if (!newkingCheck(board, newPossible)) {
             myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
-            }
+            //}
         }
 
         goleft = myColumn - 1;
         goup = myRow + 1;
         newPossible = new ChessPosition(goup, goleft);
         if (onBoard(newPossible) && pieceCheck(board, newPossible)) {
-            if (!newkingCheck(board, newPossible)) {
+            //if (!newkingCheck(board, newPossible)) {
             myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
-            }
+            //}
         }
 
         goleft = myColumn - 1;
         godown = myRow - 1;
         newPossible = new ChessPosition(godown, goleft);
         if (onBoard(newPossible) && pieceCheck(board, newPossible)) {
-            if (!newkingCheck(board, newPossible)) {
+            //if (!newkingCheck(board, newPossible)) {
             myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
-            }
+            //}
         }
 
         godown = myRow - 1;
         goright = myColumn + 1;
         newPossible = new ChessPosition(godown, goright);
         if (onBoard(newPossible) && pieceCheck(board, newPossible)) {
-            if (!newkingCheck(board, newPossible)) {
+            //if (!newkingCheck(board, newPossible)) {
             myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
-            }
+            //}
         }
         //before adding a move, check for threats
         //check the knight squares for knights (at that destination)
