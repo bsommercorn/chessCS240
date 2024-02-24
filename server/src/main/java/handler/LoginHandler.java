@@ -3,9 +3,9 @@ package handler;
 import spark.Request;
 import spark.Response;
 
-public class RegisterHandler {
+public class LoginHandler {
 
-    public Object register(Request req, Response res) {
+    public Object login(Request req, Response res) {
         return null;
     }
 }
