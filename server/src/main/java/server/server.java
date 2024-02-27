@@ -1,13 +1,16 @@
 package server;
 
-import service.*;
 import handler.*;
 import spark.*;
 
-public class Server {
+public class server {
+
+    public static void main(String[] args) {
+        new server().run(8080);
+    }
 
     public int run(int desiredPort) {
-        Spark.port(8080);
+        Spark.port(desiredPort);
 
         //Spark.staticFiles.location("web");
         Spark.externalStaticFileLocation("C:\\Users\\benja\\IdeaProjects\\chess\\web");
