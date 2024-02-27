@@ -8,7 +8,11 @@ public class AuthData {
         this.authToken = authToken;
         this.user = user;
     }
-
+    public AuthData(String authToken) {
+        this.authToken = authToken;
+        String[] extract = authToken.split("/", 2);
+        this.user = extract[0];
+    }
     public String getAuthToken() {
         return authToken;
     }

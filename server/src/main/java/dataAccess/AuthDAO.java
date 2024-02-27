@@ -22,6 +22,12 @@ public class AuthDAO {
     public void clearAll() {
         myTokens = new ArrayList<AuthData>();
     }
+
+    public void verifyToken(AuthData myToken) throws DataAccessException {
+        if (!myTokens.contains(myToken)) {
+            throw new DataAccessException("AuthToken not found");
+        }
+    }
     //create
     //read
     //update

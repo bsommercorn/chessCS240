@@ -17,6 +17,11 @@ public class GameData {
         this.game = game;
     }
 
+    public GameData(int gameID, String gameName) {
+        this.gameID = gameID;
+        this.gameName = gameName;
+    }
+
     public int getGameID() {
         return gameID;
     }
