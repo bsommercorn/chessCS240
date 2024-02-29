@@ -95,18 +95,6 @@ public class Bishop extends ChessPiece {
             }
         }
         //myMoves = protectKing(board, myMoves);
-        /*
-        if (isInCheck(activePiece.getTeamColor())) {
-                myboard.removePiece(move.getEndPosition());
-                ChessPiece restore = myboard.getLastCaptured();
-                myboard.addPiece(move.getEndPosition(), restore);
-                myboard.addPiece(move.getStartPosition(), activePiece);
-            }
-         */
-        //iterate through moves
-        //actually do them on the board
-        //see if they put the king in check, if they did, delete this move from the list
-        //undo them on the board
         System.out.println("myMoves was:" + myMoves.toString());
         return myMoves;
     }

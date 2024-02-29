@@ -11,11 +11,6 @@ public class Knight extends ChessPiece{
 
     @Override
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        //so, we know the board, and we can make moves based on where we are and the other pieces.
-        //first let's start with getting to a place on the board that the knight could move
-        //go to each of the 8 knight positions
-
-        //how to store the moves? the order will never matter, but the number will vary for any piece
         ArrayList<ChessMove> myMoves = new ArrayList<ChessMove>();
 
         int myColumn = myPosition.getColumn() + 1;
@@ -62,18 +57,9 @@ public class Knight extends ChessPiece{
         }
         newPossible = new ChessPosition(myRow - 1, myColumn + 2);
         if (onBoard(newPossible) && pieceCheck(board, newPossible)) {
-            myMoves.add(new ChessMove((ChessPosition) myPosition,newPossible));
+            myMoves.add(new ChessMove((ChessPosition) myPosition, newPossible));
             //System.out.println("Valid lower right move found at (" + newPossible.toString());
         }
-        /*
-        System.out.println("Number of moves for this Knight is " + myMoves.size());
-        for (int i = 0; i < myMoves.size(); i++) {
-            System.out.print(myMoves.get(i).getEndPosition().toString() + " ");
-        }
-        System.out.println(" ");
-         */
-
-
         //myMoves = protectKing(board, myMoves);
         return myMoves;
     }

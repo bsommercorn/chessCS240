@@ -8,13 +8,6 @@ public class Pawn extends ChessPiece {
     boolean passantE = false;
 
     ArrayList<ChessMove> myMoves = new ArrayList<>();
-
-    public void setPassantW () {
-        passantW = true;
-    }
-    public void setPassantE () { //maybe instead of setting the enemy to en passant, set ourselves to capturable by en passant
-        passantE = true;
-    }
     public void noPassant() {
         passantW = false;
         passantE = false;

@@ -45,7 +45,4 @@ public class GameData {
     public String getGameName() {
         return gameName;
     }
-    public ChessGame getGame() {
-        return game;
-    }
 }
