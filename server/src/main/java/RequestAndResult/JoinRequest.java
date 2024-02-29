@@ -10,6 +10,19 @@ public class JoinRequest {
     AuthData myToken = null;
     boolean badColor = false;
 
+    public JoinRequest(String playerColor, int gameID) {
+        if (Objects.equals(playerColor, "BLACK")) {
+            this.playerColor = ChessGame.TeamColor.BLACK;
+        } else if (Objects.equals(playerColor, "WHITE")) {
+            this.playerColor = ChessGame.TeamColor.WHITE;
+        }
+        else if (playerColor != null) {
+            badColor = true;
+        }
+
+        this.gameID = gameID;
+    }
+
     public boolean isBadColor() {
         return badColor;
     }
@@ -28,6 +41,7 @@ public class JoinRequest {
 
         this.gameID = gameID;
     }
+    public JoinRequest() {}
     public AuthData getMyToken() {
         return myToken;
     }

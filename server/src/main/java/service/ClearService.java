@@ -17,4 +17,13 @@ public class ClearService {
         tokenAccess.clearAll();
         userAccess.clearAll();
     }
+
+    public boolean isEmpty() {
+        if (gameAccess.getSize() == 0 && tokenAccess.getSize() == 0 && userAccess.getSize() == 0) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }

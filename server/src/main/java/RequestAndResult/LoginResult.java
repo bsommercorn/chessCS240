@@ -28,4 +28,13 @@ public class LoginResult {
         return username;
     }
 
+    public String toString() {
+        if (authToken != null) {
+            return "{ \"username\":\"" + authToken + "\" }";
+        }
+        else {
+            return "{ \"message\":\"" + message + "\" }";
+        }
+
+    }
 }

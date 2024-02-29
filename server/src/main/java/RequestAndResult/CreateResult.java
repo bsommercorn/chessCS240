@@ -16,4 +16,14 @@ public class CreateResult {
     public CreateResult(String exception) { //fail, error constructor
         this.message = exception;
     }
+
+    public String toString() {
+        if (gameID != null) {
+            return "{ \"gameID\": " + gameID + " }";
+        }
+        else {
+            return "{ \"message\":\"" + message + "\" }";
+        }
+
+    }
 }

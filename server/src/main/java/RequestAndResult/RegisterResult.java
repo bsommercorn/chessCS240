@@ -32,4 +32,15 @@ public class RegisterResult {
     public RegisterResult(String message) {
         this.message = message;
     }
+
+    @Override
+    public String toString() {
+        if (authToken != null) {
+            return "{ \"username\":\"" + authToken + "\" }"; //fix?
+        }
+        else {
+            return "{ \"message\":\"" + message + "\" }";
+        }
+
+    }
 }

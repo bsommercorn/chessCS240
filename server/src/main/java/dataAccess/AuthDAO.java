@@ -37,6 +37,10 @@ public class AuthDAO {
             throw new DataAccessException("Error: AuthToken not found");
         }
     }
+
+    public int getSize() {
+        return myTokens.size();
+    }
     //create
     //read
     //update

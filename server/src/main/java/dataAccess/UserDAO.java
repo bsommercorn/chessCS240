@@ -31,6 +31,10 @@ public class UserDAO {
             throw new DataAccessException("Error: Username or password was incorrect");
         }
     }
+
+    public int getSize() {
+        return myUsers.size();
+    }
     //create
     //read
     //update

@@ -40,6 +40,10 @@ public class GameDAO {
             throw new DataAccessException("Error: bad request");
         }
     }
+
+    public int getSize() {
+        return myGames.size();
+    }
     //create
     //read
     //update

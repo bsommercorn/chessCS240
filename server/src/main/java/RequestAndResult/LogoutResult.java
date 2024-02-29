@@ -17,4 +17,13 @@ public class LogoutResult {
     public String getMessage() {
         return message;
     }
+
+    public String toString() {
+        if (message != null) {
+            return "{ \"message\":\"" + message + "\" }";
+        }
+        else {
+            return "{}";
+        }
+    }
 }

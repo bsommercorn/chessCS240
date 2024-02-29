@@ -27,4 +27,14 @@ public class JoinResult {
     public void setMyGame(GameData myGame) {
         this.myGame = myGame;
     }
+
+    public String toString() {
+        if (message != null) {
+            return "{ \"message\":\"" + message + "\" }";
+        }
+        else {
+            return "{}";
+        }
+
+    }
 }
