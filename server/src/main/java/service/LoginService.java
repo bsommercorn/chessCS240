@@ -31,6 +31,7 @@ public class LoginService {
             try {
                 myResult = new LoginResult(tokenAccess.createAuth(username));
             } catch (Exception e) {
+                e.printStackTrace();
                 throw new RuntimeException(); //FIX LATER
             }
             return myResult;

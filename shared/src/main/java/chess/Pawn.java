@@ -7,6 +7,8 @@ public class Pawn extends ChessPiece {
     boolean passantW = false;
     boolean passantE = false;
 
+    ArrayList<ChessMove> myMoves = new ArrayList<>();
+
     public void setPassantW () {
         passantW = true;
     }
@@ -23,7 +25,6 @@ public class Pawn extends ChessPiece {
     }
 
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        ArrayList<ChessMove> myMoves = new ArrayList<>();
 
         int myRow = myPosition.getRow() + 1;
         int myCol = myPosition.getColumn() + 1;
@@ -39,10 +40,7 @@ public class Pawn extends ChessPiece {
             newpossible = new ChessPosition(goup,myCol); //single up only
             if (onBoard(newpossible) && board.getPiece(newpossible) == null) {
                 if (myRow == 7) { //check for promotion
-                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.KNIGHT));
-                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.BISHOP));
-                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.ROOK));
-                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.QUEEN));
+                    promote(myPosition, newpossible);
                 }
                 else {
                     myMoves.add(new ChessMove(myPosition, newpossible));
@@ -57,10 +55,7 @@ public class Pawn extends ChessPiece {
             newpossible = new ChessPosition(goup,goright); //diagonal attack right
             if (onBoard(newpossible) && pieceCheck(board, newpossible) && board.getPiece(newpossible) != null) {
                 if (myRow == 7) { //check for promotion
-                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.KNIGHT));
-                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.BISHOP));
-                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.ROOK));
-                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.QUEEN));
+                    promote(myPosition, newpossible);
                 }
                 else {
                     myMoves.add(new ChessMove(myPosition, newpossible));
@@ -69,10 +64,7 @@ public class Pawn extends ChessPiece {
             newpossible = new ChessPosition(goup,goleft); //diagonal attack left
             if (onBoard(newpossible) && pieceCheck(board, newpossible) && board.getPiece(newpossible) != null) {
                 if (myRow == 7) { //check for promotion
-                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.KNIGHT));
-                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.BISHOP));
-                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.ROOK));
-                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.QUEEN));
+                    promote(myPosition, newpossible);
                 }
                 else {
                     myMoves.add(new ChessMove(myPosition, newpossible));
@@ -83,10 +75,7 @@ public class Pawn extends ChessPiece {
             newpossible = new ChessPosition(godown,myCol); //single down only
             if (onBoard(newpossible) && board.getPiece(newpossible) == null) {
                 if (myRow == 2) { //check for promotion
-                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.KNIGHT));
-                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.BISHOP));
-                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.ROOK));
-                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.QUEEN));
+                    promote(myPosition, newpossible);
                 }
                 else {
                     myMoves.add(new ChessMove(myPosition, newpossible));
@@ -101,10 +90,7 @@ public class Pawn extends ChessPiece {
             newpossible = new ChessPosition(godown,goright); //diagonal attack right
             if (onBoard(newpossible) && pieceCheck(board, newpossible) && board.getPiece(newpossible) != null) {
                 if (myRow == 2) { //check for promotion
-                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.KNIGHT));
-                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.BISHOP));
-                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.ROOK));
-                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.QUEEN));
+                    promote(myPosition, newpossible);
                 }
                 else {
                     myMoves.add(new ChessMove(myPosition, newpossible));
@@ -113,10 +99,7 @@ public class Pawn extends ChessPiece {
             newpossible = new ChessPosition(godown,goleft); //diagonal attack left
             if (onBoard(newpossible) && pieceCheck(board, newpossible) && board.getPiece(newpossible) != null) {
                 if (myRow == 2) { //check for promotion
-                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.KNIGHT));
-                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.BISHOP));
-                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.ROOK));
-                    myMoves.add(new ChessMove(myPosition, newpossible, PieceType.QUEEN));
+                    promote(myPosition, newpossible);
                 }
                 else {
                     myMoves.add(new ChessMove(myPosition, newpossible));
@@ -126,4 +109,12 @@ public class Pawn extends ChessPiece {
 
         return myMoves;
     }
+
+    private void promote(ChessPosition myPosition, ChessPosition newpossible) {
+        myMoves.add(new ChessMove(myPosition, newpossible, PieceType.KNIGHT));
+        myMoves.add(new ChessMove(myPosition, newpossible, PieceType.BISHOP));
+        myMoves.add(new ChessMove(myPosition, newpossible, PieceType.ROOK));
+        myMoves.add(new ChessMove(myPosition, newpossible, PieceType.QUEEN));
+    }
+
 }
