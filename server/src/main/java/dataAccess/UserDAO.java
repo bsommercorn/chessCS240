@@ -35,8 +35,4 @@ public class UserDAO {
     public int getSize() {
         return myUsers.size();
     }
-    //create
-    //read
-    //update
-    //delete
 }

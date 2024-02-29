@@ -44,20 +44,3 @@ public class JoinGameHandler {
         return new Gson().toJson(myResult);
     }
 }
-
-/*
-if (myResult.getMessage() != null) {
-            if (myResult.getMessage() == "Error: bad request") {
-                res.status(400);
-            }
-            if (myResult.getMessage() == "Error: unauthorized") {
-                res.status(401);
-            }
-            if (myResult.getMessage() == "Error: already taken") {
-                res.status(403);
-            }
-            if (myResult.getMessage() == "Error: bad color") {
-                res.status(403);
-            }
-        }
- */

@@ -41,9 +41,4 @@ public class AuthDAO {
     public int getSize() {
         return myTokens.size();
     }
-    //create
-    //read
-    //update
-    //delete
-
 }

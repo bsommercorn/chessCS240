@@ -44,8 +44,4 @@ public class GameDAO {
     public int getSize() {
         return myGames.size();
     }
-    //create
-    //read
-    //update
-    //delete
 }
