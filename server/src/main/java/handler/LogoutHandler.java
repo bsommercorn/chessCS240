@@ -1,11 +1,10 @@
 package handler;
 
-import RequestAndResult.CreateResult;
-import RequestAndResult.LogoutRequest;
-import RequestAndResult.LogoutResult;
+import Result.CreateResult;
+import Request.LogoutRequest;
+import Result.LogoutResult;
 import com.google.gson.Gson;
 import model.AuthData;
-import service.LoginService;
 import service.LogoutService;
 import spark.Request;
 import spark.Response;

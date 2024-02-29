@@ -1,6 +1,7 @@
 package passoffTests.chessTests.chessPieceTests;
 
 import chess.*;
+import chess.Pieces.ChessPiece;
 import org.junit.jupiter.api.Test;
 import passoffTests.TestFactory;
 

@@ -1,4 +1,4 @@
-package RequestAndResult;
+package Result;
 import model.AuthData;
 public class RegisterResult {
     String authToken;

@@ -1,14 +1,10 @@
 package service;
 
-import RequestAndResult.LogoutRequest;
-import RequestAndResult.LogoutResult;
+import Request.LogoutRequest;
+import Result.LogoutResult;
 import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import model.AuthData;
-import spark.Request;
-import spark.Response;
-
-import java.sql.SQLException;
 
 public class LogoutService {
     AuthDAO tokenAccess = new AuthDAO();

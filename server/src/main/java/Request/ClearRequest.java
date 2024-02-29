@@ -1,4 +1,4 @@
-package RequestAndResult;
+package Request;
 
 public class ClearRequest {
 

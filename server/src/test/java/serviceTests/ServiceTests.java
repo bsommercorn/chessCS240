@@ -1,6 +1,7 @@
 package serviceTests;
 
-import RequestAndResult.*;
+import Request.*;
+import Result.*;
 import model.AuthData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

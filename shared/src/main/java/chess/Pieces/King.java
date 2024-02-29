@@ -1,9 +1,11 @@
-package chess;
+package chess.Pieces;
+
+import chess.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class King extends ChessPiece{
+public class King extends ChessPiece {
     public King(ChessGame.TeamColor teamColor) {
         super(teamColor, PieceType.KING);
         System.out.println("King was created");

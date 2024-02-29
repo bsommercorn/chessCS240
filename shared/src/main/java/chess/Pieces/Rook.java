@@ -1,9 +1,15 @@
-package chess;
+package chess.Pieces;
+
+import chess.ChessBoard;
+import chess.ChessGame;
+import chess.ChessMove;
+import chess.ChessPosition;
+import chess.Pieces.ChessPiece;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class Rook extends ChessPiece{
+public class Rook extends ChessPiece {
     public Rook(ChessGame.TeamColor teamColor) {
         super(teamColor, PieceType.ROOK);
         System.out.println("Rook was created");

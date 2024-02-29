@@ -1,19 +1,20 @@
-package RequestAndResult;
+package Request;
 
 import model.AuthData;
 
-public class LogoutRequest {
+public class ListRequest {
     AuthData myToken = null;
-    public LogoutRequest(AuthData myToken) {
+    public ListRequest(AuthData myToken) {
         this.myToken = myToken;
     }
 
-    public LogoutRequest() {
+    public ListRequest() {
     }
 
     public AuthData getMyToken() {
         return myToken;
     }
+
     public void setMyToken(AuthData myToken) {
         this.myToken = myToken;
     }

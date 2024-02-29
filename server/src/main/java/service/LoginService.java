@@ -1,15 +1,11 @@
 package service;
 
-import RequestAndResult.LoginRequest;
-import RequestAndResult.LoginResult;
+import Request.LoginRequest;
+import Result.LoginResult;
 import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.UserDAO;
 import model.UserData;
-import spark.Request;
-import spark.Response;
-
-import java.sql.SQLException;
 
 public class LoginService {
     UserDAO userAccess = new UserDAO();

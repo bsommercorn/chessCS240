@@ -1,12 +1,10 @@
 package handler;
 
-import RequestAndResult.CreateRequest;
-import RequestAndResult.CreateResult;
-import RequestAndResult.RegisterRequest;
+import Request.CreateRequest;
+import Result.CreateResult;
 import com.google.gson.Gson;
 import model.AuthData;
 import service.CreateGameService;
-import service.RegisterService;
 import spark.Request;
 import spark.Response;
 

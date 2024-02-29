@@ -1,9 +1,15 @@
-package chess;
+package chess.Pieces;
+
+import chess.ChessBoard;
+import chess.ChessGame;
+import chess.ChessMove;
+import chess.ChessPosition;
+import chess.Pieces.ChessPiece;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class Queen extends ChessPiece{
+public class Queen extends ChessPiece {
     public Queen(ChessGame.TeamColor teamColor) {
         super(teamColor, PieceType.QUEEN);
         System.out.println("Queen was created");

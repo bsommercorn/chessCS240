@@ -1,13 +1,11 @@
 package handler;
 
-import RequestAndResult.CreateResult;
-import RequestAndResult.ListRequest;
-import RequestAndResult.ListResult;
-import RequestAndResult.RegisterRequest;
+import Result.CreateResult;
+import Request.ListRequest;
+import Result.ListResult;
 import com.google.gson.Gson;
 import model.AuthData;
 import service.ListService;
-import service.RegisterService;
 import spark.Request;
 import spark.Response;
 

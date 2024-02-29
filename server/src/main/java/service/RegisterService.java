@@ -1,15 +1,11 @@
 package service;
 
-import RequestAndResult.RegisterRequest;
-import RequestAndResult.RegisterResult;
+import Request.RegisterRequest;
+import Result.RegisterResult;
 import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.UserDAO;
 import model.UserData;
-import spark.Request;
-import spark.Response;
-
-import java.sql.SQLException;
 
 
 public class RegisterService {

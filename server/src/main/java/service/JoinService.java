@@ -1,17 +1,13 @@
 package service;
 
-import RequestAndResult.JoinRequest;
-import RequestAndResult.JoinResult;
+import Request.JoinRequest;
+import Result.JoinResult;
 import chess.ChessGame;
 import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
 import model.AuthData;
 import model.GameData;
-import spark.Request;
-import spark.Response;
-
-import java.sql.SQLException;
 
 public class JoinService {
     private GameDAO gameAccess = new GameDAO();

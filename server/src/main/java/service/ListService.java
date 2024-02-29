@@ -1,15 +1,11 @@
 package service;
 
-import RequestAndResult.ListRequest;
-import RequestAndResult.ListResult;
+import Request.ListRequest;
+import Result.ListResult;
 import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
 import model.AuthData;
-import spark.Request;
-import spark.Response;
-
-import java.sql.SQLException;
 
 public class ListService {
     private GameDAO gameAccess = new GameDAO();

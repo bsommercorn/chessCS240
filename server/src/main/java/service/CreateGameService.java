@@ -1,16 +1,12 @@
 package service;
 
-import RequestAndResult.CreateRequest;
-import RequestAndResult.CreateResult;
+import Request.CreateRequest;
+import Result.CreateResult;
 import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
 import model.AuthData;
 import model.GameData;
-import spark.Request;
-import spark.Response;
-
-import java.sql.SQLException;
 
 public class CreateGameService {
 

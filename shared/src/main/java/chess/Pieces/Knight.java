@@ -1,9 +1,15 @@
-package chess;
+package chess.Pieces;
+
+import chess.ChessBoard;
+import chess.ChessGame;
+import chess.ChessMove;
+import chess.ChessPosition;
+import chess.Pieces.ChessPiece;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class Knight extends ChessPiece{
+public class Knight extends ChessPiece {
     public Knight(ChessGame.TeamColor teamColor) {
         super(teamColor, PieceType.KNIGHT);
         System.out.println("Knight was created");
