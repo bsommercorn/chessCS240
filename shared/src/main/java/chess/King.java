@@ -9,11 +9,6 @@ public class King extends ChessPiece{
         System.out.println("King was created");
     }
 
-    public boolean kingCheck(ChessBoard board, ChessPosition myPosition) { //might need to make this public
-        //apparently, we get a stack overflow if we try to check all enemy pieces for king-capturing moves
-        return false;
-    }
-
     @Override
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         ArrayList<ChessMove> myMoves = new ArrayList<ChessMove>();

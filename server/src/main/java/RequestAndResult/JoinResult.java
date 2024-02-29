@@ -20,14 +20,6 @@ public class JoinResult {
         this.message = message;
     }
 
-    public GameData getMyGame() {
-        return myGame;
-    }
-
-    public void setMyGame(GameData myGame) {
-        this.myGame = myGame;
-    }
-
     public String toString() {
         if (message != null) {
             return "{ \"message\":\"" + message + "\" }";

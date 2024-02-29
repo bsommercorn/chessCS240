@@ -3,12 +3,6 @@ package chess;
 import java.util.Arrays;
 import java.util.Objects;
 
-/**
- * A chessboard that can hold and rearrange chess pieces.
- * <p>
- * Note: You can add to this class, but you may not alter
- * signature of the existing methods.
- */
 public class ChessBoard {
 
     ChessPiece myboard[][] = new ChessPiece[8][8];
@@ -36,12 +30,6 @@ public class ChessBoard {
         return pieceCount;
     }
 
-    /**
-     * Adds a chess piece to the chessboard
-     *
-     * @param position where to add the piece to
-     * @param piece    the piece to add
-     */
     public void addPiece(ChessPosition position, ChessPiece piece) {
         pieceCount++;
         lastcaptured = null;
@@ -98,18 +86,7 @@ public class ChessBoard {
         if (mypos != null) { //this seems clunky. Is it wrong?
             myboard[position.getColumn()][position.getRow()] = null;
         }
-        else {
-            //System.out.println("No piece here!");
-        }
     }
-
-    /**
-     * Gets a chess piece on the chessboard
-     *
-     * @param position The position to get the piece from
-     * @return Either the piece at the position, or null if no piece is at that
-     * position
-     */
     public ChessPiece getPiece(ChessPosition position) {
         if (position == null) {
             System.out.println("No position provided!");
@@ -129,11 +106,6 @@ public class ChessBoard {
         }
         return null;
     }
-
-    /**
-     * Sets the board to the default starting board
-     * (How the game of chess normally starts)
-     */
     public void resetBoard() {
         myboard = new ChessPiece[8][8];
         for (int i = 0; i < 8; i++) {
@@ -208,41 +180,6 @@ public class ChessBoard {
             myoutput = myoutput + " " + (j + 1) + "  ";
         }
         myoutput = myoutput + "\n";
-        /*
-        for (int i = 0; i <= 7; i++) { //for every rank up from 0
-            for (int j = 7; j >= 0; j--) { //go across every file
-                if (whiteSquare) {
-                    myoutput = myoutput + "\u001b[48;5;15m";
-                    whiteSquare = false;
-                }
-                else {
-                    myoutput = myoutput + "\u001b[48;5;43m"; //fix this color
-                    whiteSquare = true;
-                }
-                if (myboard[j][i] != null) {
-                    //now do a black/white test with the real pieces
-                    if (myboard[j][i].getTeamColor() == ChessGame.TeamColor.WHITE) { //0m
-                        myoutput = myoutput + " W" + myboard[j][i].toString() + " ";
-                    }
-                    else {
-                        myoutput = myoutput + " B" + myboard[j][i].toString() + " ";
-                    }
-                }
-                else {
-                    myoutput = myoutput + "    ";
-                }
-            }
-            myoutput = myoutput + "\u001b[48;5;235m"; //here is where we reset the background color so the board doesn't extend forever
-            myoutput = myoutput + "\n";
-            whiteSquare = !whiteSquare; //\e[0m
-        }
-
-        myoutput = myoutput + " ";
-        for (int j = 0; j < 8; j++) {
-            myoutput = myoutput + (j + 1) + "   ";
-        }
-
-         */
 
         return myoutput;
     }
@@ -263,13 +200,4 @@ public class ChessBoard {
         result = 31 * result + Arrays.deepHashCode(myboard);
         return result;
     }
-    /*
-    @Override
-    public String toString() {
-        return "ChessBoard{" +
-                "myboard=" + Arrays.deepToString(myboard) +
-                '}';
-    }
-
-     */
 }
