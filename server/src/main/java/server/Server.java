@@ -12,8 +12,8 @@ public class Server {
     public int run(int desiredPort) {
         Spark.port(desiredPort);
 
-        //Spark.staticFiles.location("web");
-        Spark.externalStaticFileLocation("C:\\Users\\benja\\IdeaProjects\\chess\\web");
+        Spark.staticFiles.location("web");
+        //Spark.externalStaticFileLocation("C:\\Users\\benja\\IdeaProjects\\chess\\web");
 
         Spark.post("/user", (req, res) -> (new RegisterHandler()).register(req, res));
         Spark.post("/session", (req, res) -> (new LoginHandler()).login(req, res));
