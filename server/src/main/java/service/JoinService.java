@@ -24,10 +24,10 @@ public class JoinService {
         try {
             tokenAccess.verifyToken(myToken);
             if (myRequest.getPlayercolor() == null) {//for viewers
+                GameData myGame = gameAccess.findGame(myRequest.getGameID());
                 if (myRequest.isBadColor()) {
                     return new JoinResult("Error: bad color");
                 }
-                GameData myGame = gameAccess.findGame(myRequest.getGameID());
                 JoinResult myResult = new JoinResult(myGame);
                 return myResult;
             }
@@ -57,7 +57,7 @@ public class JoinService {
                 return myResult;
             }
         } catch (DataAccessException e) { // | SQLException e
-            e.printStackTrace();
+            //e.printStackTrace();
             return new JoinResult(e.getMessage());
         }
     }

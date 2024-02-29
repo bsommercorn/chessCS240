@@ -4,15 +4,23 @@ import chess.ChessGame;
 import model.GameData;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListResult {
-    ArrayList<GameData> myGames;
+    List<GameData> games = new ArrayList<GameData>(0);
+
+    public List<GameData> getMyGames() {
+        return games;
+    }
+
     String message;
-    public ListResult(ArrayList<GameData> myGames) {
-        this.myGames = myGames;
+    public ListResult(List<GameData> myGames) {
+        this.games = myGames;
     }
     public ListResult(String exception) {
         this.message = exception;
     }
-    public ListResult(){}
+    public String getMessage() {
+        return message;
+    }
 }

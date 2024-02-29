@@ -14,7 +14,7 @@ public class AuthDAO {
         if (!myTokens.contains(myToken)) {
             myTokens.add(myToken);
         } else {
-            throw new DataAccessException("AuthToken already exists");
+            throw new DataAccessException("Error: AuthToken already exists");
         }
         return myToken;
     }
@@ -25,7 +25,16 @@ public class AuthDAO {
 
     public void verifyToken(AuthData myToken) throws DataAccessException {
         if (!myTokens.contains(myToken)) {
-            throw new DataAccessException("AuthToken not found");
+            throw new DataAccessException("Error: unauthorized");
+        }
+    }
+
+    public void deleteToken(AuthData myToken) throws DataAccessException{
+        if (myTokens.contains(myToken)) {
+            myTokens.remove(myToken);
+        }
+        else {
+            throw new DataAccessException("Error: AuthToken not found");
         }
     }
     //create

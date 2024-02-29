@@ -1,14 +1,22 @@
 package RequestAndResult;
 import model.AuthData;
 public class RegisterResult {
-    AuthData myToken;
+    String authToken;
     String message;
-
-    public AuthData getMyToken() {
-        return myToken;
+    String username;
+    public String getMyToken() {
+        return authToken;
     }
     public void setMyToken(AuthData myToken) {
-        this.myToken = myToken;
+        authToken = myToken.getAuthToken();
+        this.username = myToken.getUser();
+    }
+    public String getUsername() {
+        return username;
+    }
+
+    public String getAuthToken() {
+        return authToken;
     }
 
     public String getMessage() {
@@ -20,5 +28,8 @@ public class RegisterResult {
     }
 
     public RegisterResult() {
+    }
+    public RegisterResult(String message) {
+        this.message = message;
     }
 }

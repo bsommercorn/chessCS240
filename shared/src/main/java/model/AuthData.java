@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 public class AuthData {
     String authToken;
     String user;
@@ -27,5 +29,13 @@ public class AuthData {
 
     public void setUser(String user) {
         this.user = user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AuthData authData = (AuthData) o;
+        return Objects.equals(authToken, authData.authToken) && Objects.equals(user, authData.user);
     }
 }

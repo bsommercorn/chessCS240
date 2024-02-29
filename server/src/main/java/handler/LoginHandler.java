@@ -16,6 +16,9 @@ public class LoginHandler {
         LoginRequest newRequest = new Gson().fromJson(myJSON, LoginRequest.class);
 
         LoginResult myResult = myService.newLogin(newRequest);
+        if (myResult.getMessage() != null) {
+            res.status(401);
+        }
         return new Gson().toJson(myResult);
     }
 }

@@ -18,4 +18,7 @@ public class CreateRequest {
         return token;
     }
 
+    public void setMyToken(AuthData myAuth) {
+        this.token = myAuth;
+    }
 }

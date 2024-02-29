@@ -12,6 +12,7 @@ public class ClearService {
     private UserDAO userAccess = new UserDAO();
 
     public void clearAll() {
+        //System.out.println("gameA");
         gameAccess.clearAll();
         tokenAccess.clearAll();
         userAccess.clearAll();

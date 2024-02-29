@@ -21,7 +21,7 @@ public class ListService {
             ListResult myResult = new ListResult(gameAccess.getMyGames()); //handler will have to convert this list to strings
             return myResult;
         } catch (DataAccessException e) { //| SQLException e
-            e.printStackTrace();
+            //e.printStackTrace();
             return new ListResult(e.getMessage());
         }
     }
