@@ -3,10 +3,10 @@ package server;
 import handler.*;
 import spark.*;
 
-public class server {
+public class Server {
 
     public static void main(String[] args) {
-        new server().run(8080);
+        new Server().run(8080);
     }
 
     public int run(int desiredPort) {
