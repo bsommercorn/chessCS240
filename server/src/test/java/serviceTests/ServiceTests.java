@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import service.*;
 
-public class ServerTestCases {
+public class ServiceTests {
     ClearService myClear = new ClearService(); //doesn't take parameters, only requires positive test!
 
     CreateGameService myCreate = new CreateGameService(); //CreateGameRequest takes a gameName and an AuthToken as parameters
