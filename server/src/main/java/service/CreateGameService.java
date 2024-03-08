@@ -3,15 +3,18 @@ package service;
 import Request.CreateRequest;
 import Result.CreateResult;
 import dataAccess.AuthDAO;
+import dataAccess.AuthSQLDAO;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
 import model.AuthData;
 import model.GameData;
 
+import java.sql.SQLException;
+
 public class CreateGameService {
 
     private GameDAO gameAccess = new GameDAO();
-    private AuthDAO tokenAccess = new AuthDAO();
+    private AuthSQLDAO tokenAccess = new AuthSQLDAO();
 
     public CreateResult newGame(CreateRequest myRequest) {
         AuthData myToken = myRequest.getToken();
@@ -24,7 +27,7 @@ public class CreateGameService {
             gameAccess.createGame(myGame);
             CreateResult myResult = new CreateResult(myGame.getGameID());
             return myResult;
-        } catch (DataAccessException e) { //| SQLException e
+        } catch (DataAccessException | SQLException e) { //| SQLException e
             e.printStackTrace();
             return new CreateResult(e.getMessage());
         }

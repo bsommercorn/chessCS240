@@ -1,25 +1,29 @@
 package service;
 
-import dataAccess.AuthDAO;
-import dataAccess.GameDAO;
-import dataAccess.UserDAO;
+import dataAccess.*;
 import spark.Request;
 import spark.Response;
 
+import java.sql.SQLException;
+
 public class ClearService {
     private GameDAO gameAccess = new GameDAO();
-    private AuthDAO tokenAccess = new AuthDAO();
-    private UserDAO userAccess = new UserDAO();
+    private AuthSQLDAO tokenAccess = new AuthSQLDAO();
+    private UserSQLDAO userAccess = new UserSQLDAO();
 
     public void clearAll() {
         //System.out.println("gameA");
-        gameAccess.clearAll();
-        tokenAccess.clearAll();
-        userAccess.clearAll();
+        try {
+            tokenAccess.clearAll();
+            gameAccess.clearAll();
+            userAccess.clearAll();
+        } catch (DataAccessException | SQLException e) {
+            //do nothing
+        }
     }
 
     public boolean isEmpty() {
-        if (gameAccess.getSize() == 0 && tokenAccess.getSize() == 0 && userAccess.getSize() == 0) {
+        if (gameAccess.getSize() == 0 && tokenAccess.storageSize() == 0 && userAccess.storageSize() == 0) {
             return true;
         }
         else {

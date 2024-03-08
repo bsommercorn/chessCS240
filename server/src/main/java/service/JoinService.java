@@ -4,17 +4,17 @@ import Request.JoinRequest;
 import Result.JoinResult;
 import chess.ChessGame;
 import dataAccess.AuthDAO;
+import dataAccess.AuthSQLDAO;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
 import model.AuthData;
 import model.GameData;
 
+import java.sql.SQLException;
+
 public class JoinService {
     private GameDAO gameAccess = new GameDAO();
-    /**
-     * provides functions such as findToken
-     */
-    private AuthDAO tokenAccess = new AuthDAO();
+    private AuthSQLDAO tokenAccess = new AuthSQLDAO();
     public JoinResult joinGame(JoinRequest myRequest) {
         AuthData myToken = myRequest.getMyToken();
         try {
@@ -52,7 +52,7 @@ public class JoinService {
                 JoinResult myResult = new JoinResult(myGame);
                 return myResult;
             }
-        } catch (DataAccessException e) { // | SQLException e
+        } catch (DataAccessException | SQLException e) { // | SQLException e
             //e.printStackTrace();
             return new JoinResult(e.getMessage());
         }

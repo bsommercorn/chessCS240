@@ -2,17 +2,18 @@ package service;
 
 import Request.RegisterRequest;
 import Result.RegisterResult;
-import dataAccess.AuthDAO;
-import dataAccess.DataAccessException;
-import dataAccess.UserDAO;
+import dataAccess.*;
 import model.UserData;
+
+import java.sql.SQLException;
 
 
 public class RegisterService {
 
-    UserDAO userAccess = new UserDAO();
+    UserSQLDAO userAccess = new UserSQLDAO();
 
     AuthDAO tokenAccess = new AuthDAO();
+    AuthSQLDAO tokenSQLAccess = new AuthSQLDAO();
 
     public RegisterResult newRegister(RegisterRequest newRequest) {
         String username = newRequest.getUsername();
@@ -23,9 +24,9 @@ public class RegisterService {
 
         try {
             userAccess.addUser(newUser);
-            myResult.setMyToken(tokenAccess.createAuth(username));
+            myResult.setMyToken(tokenSQLAccess.createAuth(username));
             return myResult;
-        } catch (DataAccessException e) { //| SQLException e
+        } catch (DataAccessException | SQLException e) { //SQLexception
             myResult.setMessage(e.getMessage());
             return myResult;
         }

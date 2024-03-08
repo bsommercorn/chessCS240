@@ -2,14 +2,14 @@ package service;
 
 import Request.LoginRequest;
 import Result.LoginResult;
-import dataAccess.AuthDAO;
-import dataAccess.DataAccessException;
-import dataAccess.UserDAO;
+import dataAccess.*;
 import model.UserData;
 
+import java.sql.SQLException;
+
 public class LoginService {
-    UserDAO userAccess = new UserDAO();
-    AuthDAO tokenAccess = new AuthDAO();
+    UserSQLDAO userAccess = new UserSQLDAO();
+    AuthSQLDAO tokenAccess = new AuthSQLDAO();
 
     public LoginResult newLogin(LoginRequest myRequest) {
         String username = myRequest.getUsername();
@@ -17,7 +17,7 @@ public class LoginService {
         UserData myUser = null;
         try {
             myUser = userAccess.verifyUser(username, password);
-        } catch (DataAccessException e) { // | SQLException e
+        } catch (DataAccessException | SQLException e) { // | SQLException e
             LoginResult myResult = new LoginResult(e.getMessage());
             return myResult;
         }

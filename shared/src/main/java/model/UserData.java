@@ -29,4 +29,8 @@ public class UserData { //record classes?
         UserData userData = (UserData) o;
         return Objects.equals(username, userData.username) && Objects.equals(password, userData.password) && Objects.equals(email, userData.email);
     }
+
+    public String getEmail() {
+        return email;
+    }
 }

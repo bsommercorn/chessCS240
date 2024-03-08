@@ -15,6 +15,7 @@ public class AuthDAO {
         try {
             configureDatabase();
         } catch (DataAccessException e) {
+            e.printStackTrace();
             //throw new RuntimeException(e);
             //do nothing
         }
@@ -55,17 +56,14 @@ public class AuthDAO {
         return myTokens.size();
     }
 
-    private final String[] createStatements = { //fix to make like real auth code
+    private final String[] createStatements = { //username is good, but authtoken needs to include numbers
             """
-            CREATE TABLE IF NOT EXISTS  pet (
+            CREATE TABLE IF NOT EXISTS  tokens (
               `id` int NOT NULL AUTO_INCREMENT,
-              `name` varchar(256) NOT NULL,
-              `type` ENUM('CAT', 'DOG', 'FISH', 'FROG', 'ROCK') DEFAULT 'CAT',
-              `json` TEXT DEFAULT NULL,
-              PRIMARY KEY (`id`),
-              INDEX(type),
-              INDEX(name)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+              `authtoken` varchar(256) NOT NULL,
+              `username` varchar(256) NOT NULL,
+              PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
             """
     };
 
@@ -78,6 +76,7 @@ public class AuthDAO {
                 }
             }
         } catch (SQLException ex) {
+            ex.printStackTrace();
             //throw new DataAccessException(500, String.format("Unable to configure database: %s", ex.getMessage()));
             throw new DataAccessException("Unable to configure database: %s");
         }
