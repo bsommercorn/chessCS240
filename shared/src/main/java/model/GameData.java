@@ -22,6 +22,9 @@ public class GameData {
         this.gameName = gameName;
     }
 
+    public GameData() {
+    }
+
     public int getGameID() {
         return gameID;
     }
@@ -44,5 +47,13 @@ public class GameData {
 
     public String getGameName() {
         return gameName;
+    }
+
+    public void setGameID(int gameID) {
+        this.gameID = gameID;
+    }
+
+    public void setGameName(String gameName) {
+        this.gameName = gameName;
     }
 }

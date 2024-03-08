@@ -7,7 +7,7 @@ import spark.Response;
 import java.sql.SQLException;
 
 public class ClearService {
-    private GameDAO gameAccess = new GameDAO();
+    private GameSQLDAO gameAccess = new GameSQLDAO();
     private AuthSQLDAO tokenAccess = new AuthSQLDAO();
     private UserSQLDAO userAccess = new UserSQLDAO();
 
@@ -23,7 +23,7 @@ public class ClearService {
     }
 
     public boolean isEmpty() {
-        if (gameAccess.getSize() == 0 && tokenAccess.storageSize() == 0 && userAccess.storageSize() == 0) {
+        if (gameAccess.storageSize() == 0 && tokenAccess.storageSize() == 0 && userAccess.storageSize() == 0) {
             return true;
         }
         else {

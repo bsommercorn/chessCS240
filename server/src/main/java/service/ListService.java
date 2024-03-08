@@ -2,16 +2,13 @@ package service;
 
 import Request.ListRequest;
 import Result.ListResult;
-import dataAccess.AuthDAO;
-import dataAccess.AuthSQLDAO;
-import dataAccess.DataAccessException;
-import dataAccess.GameDAO;
+import dataAccess.*;
 import model.AuthData;
 
 import java.sql.SQLException;
 
 public class ListService {
-    private GameDAO gameAccess = new GameDAO();
+    private GameSQLDAO gameAccess = new GameSQLDAO();
     private AuthSQLDAO tokenAccess = new AuthSQLDAO();
     public ListResult listGames(ListRequest myRequest) {
         AuthData myToken = myRequest.getMyToken();

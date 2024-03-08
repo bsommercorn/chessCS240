@@ -3,17 +3,14 @@ package service;
 import Request.JoinRequest;
 import Result.JoinResult;
 import chess.ChessGame;
-import dataAccess.AuthDAO;
-import dataAccess.AuthSQLDAO;
-import dataAccess.DataAccessException;
-import dataAccess.GameDAO;
+import dataAccess.*;
 import model.AuthData;
 import model.GameData;
 
 import java.sql.SQLException;
 
 public class JoinService {
-    private GameDAO gameAccess = new GameDAO();
+    private GameSQLDAO gameAccess = new GameSQLDAO();
     private AuthSQLDAO tokenAccess = new AuthSQLDAO();
     public JoinResult joinGame(JoinRequest myRequest) {
         AuthData myToken = myRequest.getMyToken();
