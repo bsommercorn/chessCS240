@@ -76,6 +76,33 @@ public class GameSQLDAO {
                 ps.setInt(1, gameID);
                 ps.setString(2, gameName);
                 //ps.setString(3, myGame.boardState());
+                ps.setString(3, "myGame.boardState()");
+                ps.executeUpdate();
+            }
+        }
+    }
+
+    public void update(int myID, GameData replacement) throws DataAccessException, SQLException {
+        int gameID = replacement.getGameID();
+        String gameName = replacement.getGameName();
+        String usernameW = replacement.getWhiteUsername();
+        String usernameB = replacement.getBlackUsername();
+        //String gameJSON = replacement.getServerBoard();
+
+        String saveName = gameName;
+        gameName = gameName.replaceAll("[;\\)\\(]+", "");
+        if (saveName != gameName) {
+            throw new DataAccessException("Error: bad request");
+        }
+
+        try (var conn = DatabaseManager.getConnection()) {
+            var statement = "UPDATE games SET whiteUsername=?, blackUsername=?, gameName=?, gamestate=? WHERE gameID='" + myID + "'";
+            try (var ps = conn.prepareStatement(statement)) {
+                ps.setString(1, usernameW);
+                ps.setString(2, usernameB);
+                ps.setString(3, gameName);
+                //ps.setString(4, gameJSON);
+                ps.setString(4, "gameJSON");
                 ps.executeUpdate();
             }
         }

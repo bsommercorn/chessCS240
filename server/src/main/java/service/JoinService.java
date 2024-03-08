@@ -34,7 +34,7 @@ public class JoinService {
                     }
                     else {
                         myGame.setBlackUsername(myRequest.getMyToken().getUser());
-                        //gameAccess.update(myGame.getGameID(), myGame); //update this game in database
+                        gameAccess.update(myGame.getGameID(), myGame); //update this game in database
                     }
                 } else if (myRequest.getPlayercolor() == ChessGame.TeamColor.WHITE) {
                     if (myGame.getWhiteUsername() != null) {
@@ -43,7 +43,7 @@ public class JoinService {
                     }
                     else {
                         myGame.setWhiteUsername(myRequest.getMyToken().getUser());
-                        //gameAccess.update(myGame.getGameID(), myGame);
+                        gameAccess.update(myGame.getGameID(), myGame);
                     }
                 }
                 JoinResult myResult = new JoinResult(myGame);
