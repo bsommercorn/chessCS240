@@ -3,9 +3,11 @@ package ui;
 import chess.*;
 import chess.Pieces.ChessPiece;
 import model.AuthData;
+import serverFacade.serverFacade;
 
 import java.util.Objects;
 import java.util.Scanner;
+import serverFacade.*;
 
 public class Main {
     private static final String UNICODE_ESCAPE = "\u001b";//\u001b[48;5;15m
@@ -14,6 +16,8 @@ public class Main {
     public static final String SET_BG_COLOR_WHITE = SET_BG_COLOR + "15m";
     private static final String ANSI_ESCAPE = "\033";
     public static final String ANSI_GREEN = "\u001B[32m";
+
+    private serverFacade mySF = new serverFacade("http://localhost:8080/");
     /*
     This was in main when I first opened this project:
         var piece = new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN);
@@ -38,15 +42,15 @@ public class Main {
                     System.out.println("This is the help menu");
                 }
                 if (Objects.equals(myinput,"login")) {
-                    //myToken = doLogin();
-                    //if (myToken != null) {
+                    myToken = doLogin();
+                    if (myToken != null) {
                         loggedin = true;
                         System.out.println("Login success!");
-                        //System.out.println("Authtoken is " + myToken.getAuthToken());
-                    //}
-                    //else {
-                        //System.out.println("Login failed.");
-                    //}
+                        System.out.println("Authtoken is " + myToken.getAuthToken());
+                    }
+                    else {
+                        System.out.println("Login failed.");
+                    }
                 }
                 if (Objects.equals(myinput,"register")) {
                     //myToken = doRegister();
@@ -98,15 +102,21 @@ public class Main {
             System.out.println("----------------------------------------");
         }
     }
-    /*
-    public static AuthToken doLogin() {
+
+    public AuthData doLogin() {
         Scanner userInput = new Scanner(System.in);
-        Repl myRepl = new Repl();
+        //Repl myRepl = new Repl();
 
         System.out.println("enter username:");
         String myusername = userInput.nextLine();
         System.out.println("enter password:");
         String mypassword = userInput.nextLine();
+
+        try {
+            return mySF.doLogin(myusername, mypassword);
+        } catch (ResponseException e) {
+            System.out.println("failure: " + e.getMessage());
+        }
 
         //LoginResult myResult = new LoginService().loginAttempt(new LoginRequest(myusername, mypassword)); //call TA tomorrow and fix with them
         LoginResult myResult = (LoginResult) myRepl.httpHandle("session", "POST", new LoginRequest(myusername, mypassword), LoginResult.class);
@@ -114,11 +124,11 @@ public class Main {
             return null;
         }
         else {
-            AuthToken myToken = new AuthToken(myResult.getMyToken().getAuthToken(), myusername);
+            AuthData myToken = new AuthData(myResult.getMyToken().getAuthToken(), myusername);
             return myToken;
         }
     }
-
+    /*
     public static AuthToken doRegister() {
         Scanner userInput = new Scanner(System.in);
         Repl myRepl = new Repl();
