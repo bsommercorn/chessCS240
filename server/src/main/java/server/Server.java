@@ -24,6 +24,8 @@ public class Server {
 
         Spark.delete("/db", (req, res) -> (new ClearHandler()).clearAll(req, res));
 
+        Spark.post("/games", (req, res) -> (new ListGamesHandler()).getList(req, res)); //shhhhhh, don't question it
+
         Spark.awaitInitialization();
         return Spark.port();
     }

@@ -1,4 +1,4 @@
-package Request;
+package model.Request;
 
 import model.AuthData;
 

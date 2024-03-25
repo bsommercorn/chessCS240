@@ -1,4 +1,4 @@
-package Request;
+package model.Request;
 
 public class RegisterRequest {
     String username;

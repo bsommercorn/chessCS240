@@ -1,4 +1,4 @@
-package Result;
+package model.Result;
 
 public class CreateResult {
     Integer gameID; //maybe change this to int gameID = -1 or something???

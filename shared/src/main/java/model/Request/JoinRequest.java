@@ -1,4 +1,4 @@
-package Request;
+package model.Request;
 
 import chess.ChessGame;
 import model.AuthData;

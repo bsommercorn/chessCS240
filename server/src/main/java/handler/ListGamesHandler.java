@@ -1,8 +1,8 @@
 package handler;
 
-import Result.CreateResult;
-import Request.ListRequest;
-import Result.ListResult;
+import model.Result.CreateResult;
+import model.Request.ListRequest;
+import model.Result.ListResult;
 import com.google.gson.Gson;
 import model.AuthData;
 import service.ListService;

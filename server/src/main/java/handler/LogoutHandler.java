@@ -1,8 +1,8 @@
 package handler;
 
-import Result.CreateResult;
-import Request.LogoutRequest;
-import Result.LogoutResult;
+import model.Result.CreateResult;
+import model.Request.LogoutRequest;
+import model.Result.LogoutResult;
 import com.google.gson.Gson;
 import model.AuthData;
 import service.LogoutService;

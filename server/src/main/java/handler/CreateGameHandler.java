@@ -1,7 +1,7 @@
 package handler;
 
-import Request.CreateRequest;
-import Result.CreateResult;
+import model.Request.CreateRequest;
+import model.Result.CreateResult;
 import com.google.gson.Gson;
 import model.AuthData;
 import service.CreateGameService;

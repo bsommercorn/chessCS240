@@ -1,10 +1,11 @@
 package handler;
 
-import Request.*;
-import Result.CreateResult;
-import Result.JoinResult;
+import model.Request.*;
+import model.Result.CreateResult;
+import model.Result.JoinResult;
 import com.google.gson.Gson;
 import model.AuthData;
+import model.Request.JoinRequest;
 import service.JoinService;
 import spark.Request;
 import spark.Response;
@@ -29,6 +30,7 @@ public class JoinGameHandler {
         JoinResult myResult = myService.joinGame(newRequest);
         if (myResult.getMessage() != null) {
             System.out.println("Error code was: " + myResult.getMessage());
+            System.out.println("Data: \nToken: " + myAuth.getAuthToken() + "\nBody: " + myJSON);
             if (myResult.getMessage() == "Error: bad request") {
                 res.status(400);
             }

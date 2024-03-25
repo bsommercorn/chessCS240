@@ -1,7 +1,7 @@
 package service;
 
-import Request.ListRequest;
-import Result.ListResult;
+import model.Request.ListRequest;
+import model.Result.ListResult;
 import dataAccess.*;
 import model.AuthData;
 

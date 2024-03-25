@@ -1,7 +1,8 @@
 package serverFacade;
 import com.google.gson.Gson;
 import model.AuthData;
-//import model.Pet;
+import model.Request.*;
+import model.Result.*;
 
 import java.io.*;
 import java.net.*;
@@ -20,40 +21,56 @@ public class serverFacade {
     //specific functions here
     public AuthData doLogin(String username, String password) throws ResponseException {
         var path = "/session";
-        return this.makeRequest("POST", path, new LoginRequest(username, password), LoginResult.class);
+        LoginResult myResult = this.makeRequest("POST", path, new LoginRequest(username, password), LoginResult.class, null);
+        //error code handling?
+        return new AuthData(myResult.getMyToken(), myResult.getUsername());
     }
 
-    /*
-    public Pet addPet(Pet pet) throws ResponseException {
-        var path = "/pet";
-        return this.makeRequest("POST", path, pet, Pet.class);
+    public AuthData doRegister(String username, String password, String email) throws ResponseException {
+        var path = "/user";
+        RegisterResult myResult = this.makeRequest("POST", path, new RegisterRequest(username, password, email), RegisterResult.class, null);
+        //error code handling?
+        return new AuthData(myResult.getMyToken(), myResult.getUsername());
     }
 
-    public void deletePet(int id) throws ResponseException {
-        var path = String.format("/pet/%s", id);
-        this.makeRequest("DELETE", path, null, null);
+    public void doLogout(AuthData myToken) throws ResponseException {
+        var path = "/session";
+        LogoutResult myResult = this.makeRequest("DELETE", path, new LogoutRequest(myToken), LogoutResult.class, myToken);
     }
 
-    public void deleteAllPets() throws ResponseException {
-        var path = "/pet";
-        this.makeRequest("DELETE", path, null, null);
+    public void doClear() throws ResponseException {
+        var path = "/db";
+        ClearResult myResult = this.makeRequest("DELETE", path, new ClearRequest(), ClearResult.class, null);
     }
 
-    public Pet[] listPets() throws ResponseException {
-        var path = "/pet";
-        record listPetResponse(Pet[] pet) {
-        }
-        var response = this.makeRequest("GET", path, null, listPetResponse.class);
-        return response.pet();
+    public CreateResult doCreate(AuthData myToken, String myName) throws ResponseException {
+        var path = "/game";
+        CreateResult myResult = this.makeRequest("POST", path, new CreateRequest(myName, myToken), CreateResult.class, myToken);
+        return myResult;
     }
-     */
 
-    private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) throws ResponseException {
+    public ListResult doList(AuthData myToken) throws ResponseException {
+        var path = "/games";
+        ListResult myResult = this.makeRequest("GET", path, new ListRequest(myToken), ListResult.class, myToken);
+        return myResult;
+    }
+
+    public JoinResult doJoin(AuthData myToken, String color, int myID) throws ResponseException {
+        var path = "/game";
+        JoinResult myResult = this.makeRequest("PUT", path, new JoinRequest(), JoinResult.class, myToken);
+        return myResult;
+    }
+
+    private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass, AuthData myAuth) throws ResponseException {
         try {
             URL url = (new URI(serverUrl + path)).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             http.setRequestMethod(method);
             http.setDoOutput(true);
+
+            if (myAuth != null) {
+                http.addRequestProperty("Authorization", myAuth.getAuthToken());
+            }
 
             writeBody(request, http);
             http.connect();

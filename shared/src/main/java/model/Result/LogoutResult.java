@@ -1,4 +1,4 @@
-package Result;
+package model.Result;
 
 public class LogoutResult {
     String message = null;

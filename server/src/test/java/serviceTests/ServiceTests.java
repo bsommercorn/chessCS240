@@ -1,8 +1,8 @@
 package serviceTests;
 
-import Request.*;
-import Result.*;
 import model.AuthData;
+import model.Request.*;
+import model.Result.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;

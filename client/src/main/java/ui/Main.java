@@ -1,8 +1,11 @@
 package ui;
 
-import chess.*;
-import chess.Pieces.ChessPiece;
 import model.AuthData;
+import model.Request.JoinRequest;
+import model.Result.CreateResult;
+import model.Result.JoinResult;
+import model.Result.ListResult;
+import model.Result.LogoutResult;
 import serverFacade.serverFacade;
 
 import java.util.Objects;
@@ -17,7 +20,7 @@ public class Main {
     private static final String ANSI_ESCAPE = "\033";
     public static final String ANSI_GREEN = "\u001B[32m";
 
-    private serverFacade mySF = new serverFacade("http://localhost:8080/");
+    private static serverFacade mySF = new serverFacade("http://localhost:8080/");
     /*
     This was in main when I first opened this project:
         var piece = new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN);
@@ -53,15 +56,15 @@ public class Main {
                     }
                 }
                 if (Objects.equals(myinput,"register")) {
-                    //myToken = doRegister();
-                    //if (myToken != null) {
+                    myToken = doRegister();
+                    if (myToken != null) {
                         loggedin = true;
                         System.out.println("Register success! Logging you in.");
-                        //System.out.println("Authtoken is " + myToken.getAuthToken());
-                    //}
-                    //else {
-                        //System.out.println("Login failed after register.");
-                    //}
+                        System.out.println("Authtoken is " + myToken.getAuthToken());
+                    }
+                    else {
+                        System.out.println("Login failed after register.");
+                    }
                 }
             }
             if (loggedin) {
@@ -79,33 +82,42 @@ public class Main {
                     System.out.println("This is the help menu");
                 }
                 if (Objects.equals(myinput,"logout")) {
-                    //doLogout(myToken);
+                    try {
+                        mySF.doLogout(myToken);
+                    } catch (ResponseException e) {
+                        System.out.println("failure: " + e.getMessage());
+                    }
                     loggedin = false;
                 }
                 if (Objects.equals(myinput, "create")) {
-                    //doCreate(myToken);
+                    doCreate(myToken);
                 }
                 if (Objects.equals(myinput, "list")) {
-                    //doList(myToken);
+                    doList(myToken);
                 }
                 if (Objects.equals(myinput, "join")) { //needs to print fancy board
-                    //doJoin(myToken);
+                    doJoin(myToken);
                 }
                 if (Objects.equals(myinput, "observe")) { //needs to print fancy board
                     //doObserve(myToken);
                 }
                 if (Objects.equals(myinput, "clear")) {
-                    //doClear();
+                    System.out.println("Clearing the database.");
+                    try {
+                        mySF.doClear();
+                    } catch (ResponseException e) {
+                        System.out.println("failure: " + e.getMessage());
+                    }
                     loggedin = false;
+                    System.out.println("You are now logged out!");
                 }
             }
             System.out.println("----------------------------------------");
         }
     }
 
-    public AuthData doLogin() {
+    public static AuthData doLogin() {
         Scanner userInput = new Scanner(System.in);
-        //Repl myRepl = new Repl();
 
         System.out.println("enter username:");
         String myusername = userInput.nextLine();
@@ -117,21 +129,10 @@ public class Main {
         } catch (ResponseException e) {
             System.out.println("failure: " + e.getMessage());
         }
-
-        //LoginResult myResult = new LoginService().loginAttempt(new LoginRequest(myusername, mypassword)); //call TA tomorrow and fix with them
-        LoginResult myResult = (LoginResult) myRepl.httpHandle("session", "POST", new LoginRequest(myusername, mypassword), LoginResult.class);
-        if (myResult == null || myResult.getMessage() != null) {
-            return null;
-        }
-        else {
-            AuthData myToken = new AuthData(myResult.getMyToken().getAuthToken(), myusername);
-            return myToken;
-        }
+        return null;
     }
-    /*
-    public static AuthToken doRegister() {
+    public static AuthData doRegister() {
         Scanner userInput = new Scanner(System.in);
-        Repl myRepl = new Repl();
 
         System.out.println("enter username:");
         String myusername = userInput.nextLine();
@@ -139,56 +140,69 @@ public class Main {
         String mypassword = userInput.nextLine();
         System.out.println("enter email:");
         String myemail = userInput.nextLine();
-        //handle bad input here?
-        //RegisterResult myResult = new RegisterService().newRegister(new RegisterRequest(myusername, mypassword, myemail));
-        RegisterResult myResult = (RegisterResult) myRepl.httpHandle("user", "POST", new RegisterRequest(myusername, mypassword, myemail), RegisterResult.class);
-        if (myResult == null || myResult.getMessage() != null) {
-            return null;
-        }
-        else {
-            AuthToken myToken = new AuthToken(myResult.getMyToken().getAuthToken(), myusername);
-            return myToken;
-        }
-    }
 
-    public static void doLogout(AuthToken myToken) {
-        Repl myRepl = new Repl();
-        System.out.println("You will now be logged out");
-        Result myResult = (Result) myRepl.httpHandle("session", "DELETE", new LogoutRequest(myToken), Result.class);
+        try {
+            return mySF.doRegister(myusername, mypassword, myemail);
+        } catch (ResponseException e) {
+            System.out.println("failure: " + e.getMessage());
+        }
+        return null;
     }
-
-    public static void doCreate(AuthToken myToken) { //maybe have these return strings instead?
+    public static void doCreate(AuthData myToken) { //maybe have these return strings instead?
         Scanner userInput = new Scanner(System.in);
-        Repl myRepl = new Repl();
 
         System.out.println("Time to create a new game");
         System.out.println("enter gamename:");
         String gamename = userInput.nextLine();
         System.out.println("Game will be created. Authtoken for this user is " + myToken.getAuthToken());
 
-        CreateGameResult myResult = (CreateGameResult) myRepl.httpHandle("game", "POST", new CreateGameRequest(gamename, myToken), CreateGameResult.class);
-        if (myResult == null || myResult.getMessage() != null) {
+        try {
+            CreateResult myResult = mySF.doCreate(myToken, gamename);
+            System.out.println("New game created! ID for the new game is " + myResult.getGameID());
+        } catch (ResponseException e) {
+            System.out.println("failure: " + e.getMessage());
             System.out.println("Could not create game.");
         }
-        else {
-            System.out.println("New game created! ID for the new game is " + myResult.getGameID());
-        }
     }
 
-    public static void doList(AuthToken myToken) {
-        Repl myRepl = new Repl();
-        //ListGameResult myResult = new ListGamesService().findAll(new Request(myToken));
+    public static void doList(AuthData myToken) {
         System.out.println("Games will be listed. Authtoken for this user is " + myToken.getAuthToken());
-        ListGameResult myResult = (ListGameResult) myRepl.httpHandle("games", "POST", new Request(myToken), ListGameResult.class);
-        if (myResult == null || myResult.getMessage() != null) {
-            System.out.println("Unable to list games.");
-        }
-        else {
+        try {
+            ListResult myResult = mySF.doList(myToken);
             System.out.println("Here is all the games on the server!");
             System.out.println(myResult.toString());
+        } catch (ResponseException e) {
+            System.out.println("failure: " + e.getMessage());
+            System.out.println("Unable to list games.");
         }
     }
 
+    public static void doJoin(AuthData myToken) {
+        Scanner userInput = new Scanner(System.in);
+        System.out.println("Please enter the id of the game you want to join as a player");
+        int gameID = userInput.nextInt();
+        userInput.nextLine();
+        System.out.println("Please enter the player color you would like to join as, type 'BLACK' or 'WHITE'");
+        String mycolor = userInput.nextLine();
+        //check the authToken here???
+        System.out.println("Game " + gameID + " will be joined. Authtoken for this user is " + myToken.getAuthToken());
+
+        try {
+            JoinResult myResult = mySF.doJoin(myToken, mycolor, gameID);
+            System.out.println("Joined the game!");
+        } catch (ResponseException e) {
+            System.out.println("failure: " + e.getMessage());
+            System.out.println("Could not join game.");
+        }
+
+        /*
+        Game joinedGame = new Game(myResult.getMyGame().getGameID(), myResult.getMyGame().getGameName());
+            joinedGame.setServerBoard(myResult.getMyGame().getServerBoard());
+            System.out.println(joinedGame.gamePrint());
+         */
+    }
+
+    /*
     public static void doJoin(AuthToken myToken) {
         Scanner userInput = new Scanner(System.in);
         Repl myRepl = new Repl();
@@ -244,14 +258,6 @@ public class Main {
             System.out.println(joinedGame.gamePrint());
             //do something else with the game here, like printing the current game status
         }
-    }
-
-    public static void doClear() {
-        Repl myRepl = new Repl();
-        System.out.println("Clearing the database.");
-        //Result myReponse = (Result) myRepl.httpHandle("db", "DELETE", new Request(myToken), Result.class);
-        Result myReponse = (Result) myRepl.httpHandle("db", "DELETE", new Request(), Result.class);
-        System.out.println("You are now logged out!");
     }
 }
 
