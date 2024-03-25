@@ -99,7 +99,7 @@ public class Main {
                     doJoin(myToken);
                 }
                 if (Objects.equals(myinput, "observe")) { //needs to print fancy board
-                    //doObserve(myToken);
+                    doObserve(myToken);
                 }
                 if (Objects.equals(myinput, "clear")) {
                     System.out.println("Clearing the database.");
@@ -184,7 +184,6 @@ public class Main {
         userInput.nextLine();
         System.out.println("Please enter the player color you would like to join as, type 'BLACK' or 'WHITE'");
         String mycolor = userInput.nextLine();
-        //check the authToken here???
         System.out.println("Game " + gameID + " will be joined. Authtoken for this user is " + myToken.getAuthToken());
 
         try {
@@ -199,6 +198,41 @@ public class Main {
         Game joinedGame = new Game(myResult.getMyGame().getGameID(), myResult.getMyGame().getGameName());
             joinedGame.setServerBoard(myResult.getMyGame().getServerBoard());
             System.out.println(joinedGame.gamePrint());
+         */
+    }
+
+    public static void doObserve(AuthData myToken) {
+        Scanner userInput = new Scanner(System.in);
+        System.out.println("Please enter the id of the game you want to observe");
+        int gameID = userInput.nextInt();
+        userInput.nextLine();
+
+        try {
+            JoinResult myResult = mySF.doObserve(myToken, gameID);
+            System.out.println("Joined the game! (as observer)");
+        } catch (ResponseException e) {
+            System.out.println("failure: " + e.getMessage());
+            System.out.println("Could not observe game.");
+        }
+
+        /*
+        JoinGameRequest myReq = new JoinGameRequest(null, gameID);
+        myReq.setMyToken(myToken);
+        //JoinGameResult myResult = new JoinGameService().claimSpot(myReq);
+        JoinResult myResult = (JoinGameResult) myRepl.httpHandle("game", "PUT", myReq, JoinGameResult.class);
+        if (myResult == null || myResult.getMessage() != null) {
+            System.out.println("Could not observe game.");
+            //output the message?
+        }
+        else {
+            System.out.println("Joined the game! (as observer)");
+            //System.out.println(myResult.toString());
+            Game joinedGame = new Game(myResult.getMyGame().getGameID(), myResult.getMyGame().getGameName());
+            joinedGame.setServerBoard(myResult.getMyGame().getServerBoard());
+            System.out.println(joinedGame.gamePrint());
+            //do something else with the game here, like printing the current game status
+        }
+
          */
     }
 

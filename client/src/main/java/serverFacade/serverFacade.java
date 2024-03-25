@@ -57,7 +57,13 @@ public class serverFacade {
 
     public JoinResult doJoin(AuthData myToken, String color, int myID) throws ResponseException {
         var path = "/game";
-        JoinResult myResult = this.makeRequest("PUT", path, new JoinRequest(), JoinResult.class, myToken);
+        JoinResult myResult = this.makeRequest("PUT", path, new JoinRequest(color, myID), JoinResult.class, myToken);
+        return myResult;
+    }
+
+    public JoinResult doObserve(AuthData myToken, int myID) throws ResponseException {
+        var path = "/game";
+        JoinResult myResult = this.makeRequest("PUT", path, new JoinRequest(null, myID), JoinResult.class, myToken);
         return myResult;
     }
 

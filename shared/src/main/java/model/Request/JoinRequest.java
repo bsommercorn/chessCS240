@@ -22,6 +22,12 @@ public class JoinRequest {
 
         this.gameID = gameID;
     }
+    /*
+    public JoinRequest(int myID) { //joining as observer
+        this.gameID = myID;
+    }
+
+     */
 
     public boolean isBadColor() {
         return badColor;
