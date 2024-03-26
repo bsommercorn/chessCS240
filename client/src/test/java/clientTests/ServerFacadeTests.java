@@ -10,13 +10,14 @@ import serverFacade.*;
 public class ServerFacadeTests {
 
     private static Server server = new Server();
-    private serverFacade mySF = new serverFacade("http://localhost:8080/");
-    private static AuthData myToken;
+    private static serverFacade mySF = null;
+    private static AuthData myToken = null;
 
     @BeforeAll
     public static void init() {
         server = new Server();
-        var port = server.run(8080);
+        var port = server.run(0);
+        mySF = new serverFacade("http://localhost:" + port);
         System.out.println("Started test HTTP server on " + port);
     }
 
