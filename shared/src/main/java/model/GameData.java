@@ -7,14 +7,15 @@ public class GameData {
     String whiteUsername;
     String blackUsername;
     String gameName;
-    ChessGame game;
+    //ChessGame game; //either convert this early, or only store strings in the first place
+    String boardState = "Br,Bn,Bb,Bq,Bk,Bb,Bn,Br,Bp,Bp,Bp,Bp,Bp,Bp,Bp,Bp, , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , ,Wp,Wp,Wp,Wp,Wp,Wp,Wp,Wp,Wr,Wn,Wb,Wq,Wk,Wb,Wn,Wr,";
 
     public GameData(int gameID, String whiteUsername, String blackUsername, String gameName, ChessGame game) {
         this.gameID = gameID;
         this.whiteUsername = whiteUsername;
         this.blackUsername = blackUsername;
         this.gameName = gameName;
-        this.game = game;
+        //this.game = game;
     }
 
     public GameData(int gameID, String gameName) {
@@ -55,5 +56,12 @@ public class GameData {
 
     public void setGameName(String gameName) {
         this.gameName = gameName;
+    }
+
+    public String getBoardState() {
+        return boardState;
+    }
+    public void setBoardState(String boardState) {
+        this.boardState = boardState;
     }
 }

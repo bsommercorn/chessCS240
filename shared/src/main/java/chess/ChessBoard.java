@@ -146,9 +146,96 @@ public class ChessBoard {
         //System.out.println(this.toString());
     }
 
+    @Override
+    public String toString() { //strings print top to bottom, left to right
+        String myoutput = "chess.Board is: \n";
+        myoutput = myoutput + "\u001b[38;5;235m"; //set to black text
+        boolean whiteSquare = true;
+        for (int i = 7; i >= 0; i--) { //for every rank down from 8
+            for (int j = 0; j < 8; j++) { //go across every file
+                if (whiteSquare) {
+                    myoutput = myoutput + "\u001b[48;5;15m";
+                    whiteSquare = false;
+                }
+                else {
+                    myoutput = myoutput + "\u001b[48;5;43m"; //fix this color
+                    whiteSquare = true;
+                }
+                if (myboard[j][i] != null) {
+                    //now do a black/white test with the real pieces
+                    if (myboard[j][i].getTeamColor() == ChessGame.TeamColor.WHITE) { //0m
+                        myoutput = myoutput + " W" + myboard[j][i].toString() + " ";
+                    }
+                    else {
+                        myoutput = myoutput + " B" + myboard[j][i].toString() + " ";
+                    }
+                }
+                else {
+                    myoutput = myoutput + "    ";
+                }
+            }
+            myoutput = myoutput + "\u001b[48;5;235m \u001B[32m" + (i + 1) + "\n\u001b[38;5;235m"; //here is where we reset the background color so the board doesn't extend forever
+            whiteSquare = !whiteSquare; //\e[0m
+        }
+        myoutput = myoutput + " \u001B[32m"; //set to green text for numbers
+        myoutput = myoutput + "a   b   c   d   e   f   g   h   ";
+        /*
+        for (int j = 0; j < 8; j++) { //numbers
+            myoutput = myoutput + (j + 1) + "   ";
+        }
+         */
+        myoutput = myoutput + "\u001b[38;5;235m\n\n";
+        for (int i = 0; i <= 7; i++) { //for every rank up from 0
+            for (int j = 7; j >= 0; j--) { //go across every file
+                if (whiteSquare) {
+                    myoutput = myoutput + "\u001b[48;5;15m";
+                    whiteSquare = false;
+                }
+                else {
+                    myoutput = myoutput + "\u001b[48;5;43m"; //fix this color
+                    whiteSquare = true;
+                }
+                if (myboard[j][i] != null) {
+                    //now do a black/white test with the real pieces
+                    if (myboard[j][i].getTeamColor() == ChessGame.TeamColor.WHITE) { //0m
+                        myoutput = myoutput + " W" + myboard[j][i].toString() + " ";
+                    }
+                    else {
+                        myoutput = myoutput + " B" + myboard[j][i].toString() + " ";
+                    }
+                }
+                else {
+                    myoutput = myoutput + "    ";
+                }
+            }
+            myoutput = myoutput + "\u001b[48;5;235m \u001B[32m" + (i + 1) + "\n\u001b[38;5;235m"; //here is where we reset the background color so the board doesn't extend forever
+            whiteSquare = !whiteSquare; //\e[0m
+        }
+        myoutput = myoutput + " \u001B[32m";//set to green text for numbers
+        myoutput = myoutput + "h   g   f   e   d   c   b   a   ";
+        return myoutput;
+    }
+
+
 
     @Override
-    public String toString() {
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChessBoard that = (ChessBoard) o;
+        return Arrays.deepEquals(myboard, that.myboard);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(myWhiteKing, myBlackKing, pieceCount, lastcaptured);
+        result = 31 * result + Arrays.deepHashCode(myboard);
+        return result;
+    }
+}
+
+/*
+public String singleBoardString() {
         String myoutput = "chess.Board is: \n";
         boolean whiteSquare = true;
         for (int i = 7; i >= 0; i--) { //for every rank down from 8
@@ -185,21 +272,4 @@ public class ChessBoard {
 
         return myoutput;
     }
-
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ChessBoard that = (ChessBoard) o;
-        return Arrays.deepEquals(myboard, that.myboard);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(myWhiteKing, myBlackKing, pieceCount, lastcaptured);
-        result = 31 * result + Arrays.deepHashCode(myboard);
-        return result;
-    }
-}
+ */

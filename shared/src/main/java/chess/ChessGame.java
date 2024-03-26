@@ -12,7 +12,11 @@ public class ChessGame {
     ChessGame.TeamColor whosTurn = ChessGame.TeamColor.WHITE;
 
     public ChessGame() {
+    }
 
+    @Override
+    public String toString() {
+        return myboard.toString();
     }
 
     public TeamColor getTeamTurn() {
@@ -232,11 +236,56 @@ public class ChessGame {
 
     public void setBoard(ChessBoard board) {
         myboard = board;
-        //throw new RuntimeException("Not implemented");
+    }
+    public void setBoard(String serverBoard) {
+        //just do the same thing that the toString did in Board, but in reverse
+        myboard = new ChessBoard();
+        if (Objects.equals(serverBoard, "Br,Bn,Bb,Bq,Bk,Bb,Bn,Br,Bp,Bp,Bp,Bp,Bp,Bp,Bp,Bp, , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , , ,Wp,Wp,Wp,Wp,Wp,Wp,Wp,Wp,Wr,Wn,Wb,Wq,Wk,Wb,Wn,Wr,")) {
+            myboard.resetBoard();
+            System.out.println("Board was at start position");
+        }
+        else {
+            for (int i = 7; i >= 0; i--) { //for every rank down from 8
+                for (int j = 0; j < 8; j++) {
+                    String myspot = serverBoard;
+                    if (myspot.length() >= 3) {
+                        myspot = serverBoard.substring(0,3);
+                        serverBoard = serverBoard.substring(3);
+                        ChessGame.TeamColor myColor = null;
+                        if (myspot.charAt(0) == 'B') {
+                            myColor = TeamColor.BLACK;
+                        }
+                        else if (myspot.charAt(0) == 'W') {
+                            myColor = TeamColor.WHITE;
+                        }
+                        if (myspot.charAt(0) != ' ') {
+                            if (myspot.charAt(1) == 'r') {
+                                myboard.addPiece(new ChessPosition(i+1,j+1), new Rook(myColor));
+                            }
+                            if (myspot.charAt(1) == 'n') {
+                                myboard.addPiece(new ChessPosition(i+1,j+1), new Knight(myColor));
+                            }
+                            if (myspot.charAt(1) == 'b') {
+                                myboard.addPiece(new ChessPosition(i+1,j+1), new Bishop(myColor));
+                            }
+                            if (myspot.charAt(1) == 'k') {
+                                myboard.addPiece(new ChessPosition(i+1,j+1), new King(myColor));
+                            }
+                            if (myspot.charAt(1) == 'q') {
+                                myboard.addPiece(new ChessPosition(i+1,j+1), new Queen(myColor));
+                            }
+                            if (myspot.charAt(1) == 'p') {
+                                myboard.addPiece(new ChessPosition(i+1,j+1), new Pawn(myColor));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        //addPiece takes position and piece
     }
 
     public ChessBoard getBoard() {
         return myboard;
-        //throw new RuntimeException("Not implemented");
     }
 }

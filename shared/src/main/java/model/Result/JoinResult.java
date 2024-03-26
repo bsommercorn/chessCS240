@@ -19,6 +19,9 @@ public class JoinResult {
     public void setMessage(String message) {
         this.message = message;
     }
+    public GameData getMyGame() {
+        return myGame;
+    }
 
     public String toString() {
         if (message != null) {

@@ -1,5 +1,6 @@
 package ui;
 
+import chess.ChessGame;
 import model.AuthData;
 import model.Request.JoinRequest;
 import model.Result.CreateResult;
@@ -170,7 +171,7 @@ public class Main {
         try {
             ListResult myResult = mySF.doList(myToken);
             System.out.println("Here is all the games on the server!");
-            System.out.println(myResult.toString());
+            System.out.println(myResult.printString());
         } catch (ResponseException e) {
             System.out.println("failure: " + e.getMessage());
             System.out.println("Unable to list games.");
@@ -189,16 +190,14 @@ public class Main {
         try {
             JoinResult myResult = mySF.doJoin(myToken, mycolor, gameID);
             System.out.println("Joined the game!");
+
+            ChessGame joinedGame = new ChessGame();
+            joinedGame.setBoard(myResult.getMyGame().getBoardState());
+            System.out.println(joinedGame.toString());
         } catch (ResponseException e) {
             System.out.println("failure: " + e.getMessage());
             System.out.println("Could not join game.");
         }
-
-        /*
-        Game joinedGame = new Game(myResult.getMyGame().getGameID(), myResult.getMyGame().getGameName());
-            joinedGame.setServerBoard(myResult.getMyGame().getServerBoard());
-            System.out.println(joinedGame.gamePrint());
-         */
     }
 
     public static void doObserve(AuthData myToken) {
@@ -210,6 +209,10 @@ public class Main {
         try {
             JoinResult myResult = mySF.doObserve(myToken, gameID);
             System.out.println("Joined the game! (as observer)");
+
+            ChessGame joinedGame = new ChessGame();
+            joinedGame.setBoard(myResult.getMyGame().getBoardState());
+            System.out.println(joinedGame.toString());
         } catch (ResponseException e) {
             System.out.println("failure: " + e.getMessage());
             System.out.println("Could not observe game.");

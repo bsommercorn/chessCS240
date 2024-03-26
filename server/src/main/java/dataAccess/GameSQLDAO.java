@@ -75,8 +75,7 @@ public class GameSQLDAO {
             try (var ps = conn.prepareStatement(statement)) {
                 ps.setInt(1, gameID);
                 ps.setString(2, gameName);
-                //ps.setString(3, myGame.boardState());
-                ps.setString(3, "myGame.boardState()");
+                ps.setString(3, myGame.getBoardState());
                 ps.executeUpdate();
             }
         }
@@ -87,7 +86,7 @@ public class GameSQLDAO {
         String gameName = replacement.getGameName();
         String usernameW = replacement.getWhiteUsername();
         String usernameB = replacement.getBlackUsername();
-        //String gameJSON = replacement.getServerBoard();
+        String gameJSON = replacement.getBoardState();
 
         String saveName = gameName;
         gameName = gameName.replaceAll("[;\\)\\(]+", "");
@@ -101,8 +100,7 @@ public class GameSQLDAO {
                 ps.setString(1, usernameW);
                 ps.setString(2, usernameB);
                 ps.setString(3, gameName);
-                //ps.setString(4, gameJSON);
-                ps.setString(4, "gameJSON");
+                ps.setString(4, gameJSON);
                 ps.executeUpdate();
             }
         }
@@ -112,7 +110,6 @@ public class GameSQLDAO {
         String usernameW;
         String usernameB;
         String myName = "fakename";
-        String myState;
         GameData returnGame = new GameData();
         returnGame.setGameID(getGame);
         boolean found = false;
@@ -124,8 +121,7 @@ public class GameSQLDAO {
                     returnGame.setGameName(myReturn.getString("gameName"));
                     returnGame.setWhiteUsername(myReturn.getString("whiteUsername"));
                     returnGame.setBlackUsername(myReturn.getString("blackUsername"));
-                    //myState = myReturn.getString("gamestate");
-                    //returnGame.setServerBoard(myState);
+                    returnGame.setBoardState(myReturn.getString("gamestate"));
                     found = true;
                 }
             }
