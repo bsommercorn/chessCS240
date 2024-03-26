@@ -13,7 +13,7 @@ public class Bishop extends ChessPiece {
 
     public Bishop(ChessGame.TeamColor pieceColor) {
         super(pieceColor, PieceType.BISHOP);
-        System.out.println("Bishop was created");
+        //System.out.println("Bishop was created");
     }
     @Override
     public ChessPiece.PieceType getPieceType() {

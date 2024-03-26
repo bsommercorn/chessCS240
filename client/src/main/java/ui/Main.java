@@ -9,6 +9,7 @@ import model.Result.ListResult;
 import model.Result.LogoutResult;
 import serverFacade.serverFacade;
 
+import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.Scanner;
 import serverFacade.*;
@@ -50,7 +51,7 @@ public class Main {
                     if (myToken != null) {
                         loggedin = true;
                         System.out.println("Login success!");
-                        System.out.println("Authtoken is " + myToken.getAuthToken());
+                        //System.out.println("Authtoken is " + myToken.getAuthToken());
                     }
                     else {
                         System.out.println("Login failed.");
@@ -61,7 +62,7 @@ public class Main {
                     if (myToken != null) {
                         loggedin = true;
                         System.out.println("Register success! Logging you in.");
-                        System.out.println("Authtoken is " + myToken.getAuthToken());
+                        //System.out.println("Authtoken is " + myToken.getAuthToken());
                     }
                     else {
                         System.out.println("Login failed after register.");
@@ -86,7 +87,8 @@ public class Main {
                     try {
                         mySF.doLogout(myToken);
                     } catch (ResponseException e) {
-                        System.out.println("failure: " + e.getMessage());
+                        //System.out.println("failure: " + e.getMessage());
+                        System.out.println("Logout failed!");
                     }
                     loggedin = false;
                 }
@@ -107,7 +109,8 @@ public class Main {
                     try {
                         mySF.doClear();
                     } catch (ResponseException e) {
-                        System.out.println("failure: " + e.getMessage());
+                        //System.out.println("failure: " + e.getMessage());
+                        System.out.println("Clear failed!");
                     }
                     loggedin = false;
                     System.out.println("You are now logged out!");
@@ -128,7 +131,8 @@ public class Main {
         try {
             return mySF.doLogin(myusername, mypassword);
         } catch (ResponseException e) {
-            System.out.println("failure: " + e.getMessage());
+            System.out.println("Login failed, try again");
+            //System.out.println("failure: " + e.getMessage());
         }
         return null;
     }
@@ -145,7 +149,8 @@ public class Main {
         try {
             return mySF.doRegister(myusername, mypassword, myemail);
         } catch (ResponseException e) {
-            System.out.println("failure: " + e.getMessage());
+            System.out.println("Register failed, try again");
+            //System.out.println("failure: " + e.getMessage());
         }
         return null;
     }
@@ -155,13 +160,13 @@ public class Main {
         System.out.println("Time to create a new game");
         System.out.println("enter gamename:");
         String gamename = userInput.nextLine();
-        System.out.println("Game will be created. Authtoken for this user is " + myToken.getAuthToken());
+        //System.out.println("Game will be created. Authtoken for this user is " + myToken.getAuthToken());
 
         try {
             CreateResult myResult = mySF.doCreate(myToken, gamename);
             System.out.println("New game created! ID for the new game is " + myResult.getGameID());
         } catch (ResponseException e) {
-            System.out.println("failure: " + e.getMessage());
+            //System.out.println("failure: " + e.getMessage());
             System.out.println("Could not create game.");
         }
     }
@@ -172,6 +177,7 @@ public class Main {
             ListResult myResult = mySF.doList(myToken);
             System.out.println("Here is all the games on the server!");
             System.out.println(myResult.printString());
+            //change formatting to nicer list, use special print functions, don't use IDs, etc.
         } catch (ResponseException e) {
             System.out.println("failure: " + e.getMessage());
             System.out.println("Unable to list games.");
@@ -181,11 +187,18 @@ public class Main {
     public static void doJoin(AuthData myToken) {
         Scanner userInput = new Scanner(System.in);
         System.out.println("Please enter the id of the game you want to join as a player");
-        int gameID = userInput.nextInt();
+        int gameID;
+        try {
+            gameID = userInput.nextInt();
+        }
+        catch (InputMismatchException e) {
+            System.out.println("Join failed due to invalid ID");
+            return;
+        }
         userInput.nextLine();
         System.out.println("Please enter the player color you would like to join as, type 'BLACK' or 'WHITE'");
         String mycolor = userInput.nextLine();
-        System.out.println("Game " + gameID + " will be joined. Authtoken for this user is " + myToken.getAuthToken());
+        //System.out.println("Game " + gameID + " will be joined. Authtoken for this user is " + myToken.getAuthToken());
 
         try {
             JoinResult myResult = mySF.doJoin(myToken, mycolor, gameID);
@@ -203,7 +216,14 @@ public class Main {
     public static void doObserve(AuthData myToken) {
         Scanner userInput = new Scanner(System.in);
         System.out.println("Please enter the id of the game you want to observe");
-        int gameID = userInput.nextInt();
+        int gameID;
+        try {
+            gameID = userInput.nextInt();
+        }
+        catch (InputMismatchException e) {
+            System.out.println("Join failed due to invalid ID");
+            return;
+        }
         userInput.nextLine();
 
         try {

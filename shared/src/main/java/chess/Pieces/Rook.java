@@ -12,7 +12,7 @@ import java.util.Collection;
 public class Rook extends ChessPiece {
     public Rook(ChessGame.TeamColor teamColor) {
         super(teamColor, PieceType.ROOK);
-        System.out.println("Rook was created");
+        //System.out.println("Rook was created");
     }
 
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {

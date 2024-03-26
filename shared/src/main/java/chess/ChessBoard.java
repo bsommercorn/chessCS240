@@ -35,7 +35,7 @@ public class ChessBoard {
     public void addPiece(ChessPosition position, ChessPiece piece) {
         pieceCount++;
         lastcaptured = null;
-        System.out.println("Adding " + piece.getPieceType() + " to position (" + (position.getColumn() + 1) + ", " + (position.getRow() + 1) + ")");
+        //System.out.println("Adding " + piece.getPieceType() + " to position (" + (position.getColumn() + 1) + ", " + (position.getRow() + 1) + ")");
         if (this.getPiece(position) != null) {
             System.out.println("A piece was captured!");
             pieceCount--;

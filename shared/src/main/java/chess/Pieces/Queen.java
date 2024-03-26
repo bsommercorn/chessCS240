@@ -12,7 +12,7 @@ import java.util.Collection;
 public class Queen extends ChessPiece {
     public Queen(ChessGame.TeamColor teamColor) {
         super(teamColor, PieceType.QUEEN);
-        System.out.println("Queen was created");
+        //System.out.println("Queen was created");
     }
 
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {

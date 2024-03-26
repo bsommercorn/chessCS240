@@ -20,7 +20,7 @@ public class Pawn extends ChessPiece {
     }
     public Pawn(ChessGame.TeamColor teamColor) {
         super(teamColor, PieceType.PAWN);
-        System.out.println("Pawn was created");
+        //System.out.println("Pawn was created");
     }
 
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
