@@ -32,13 +32,13 @@ public class ServerFacadeTests {
         System.out.println("Clearing the database");
         try {
             mySF.doClear();
-            System.out.println("Successful Register");
         } catch (ResponseException e) {
             System.out.println("failure: " + e.getMessage());
         }
 
         try {
             myToken = mySF.doRegister("myusername", "mypassword", "myemail");
+            System.out.println("Successful register");
         } catch (ResponseException e) {
             System.out.println("failure: " + e.getMessage());
         }
@@ -84,7 +84,7 @@ public class ServerFacadeTests {
     public void posLogout() {
         String failMessage = null;
         try {
-            myToken = mySF.doLogin("myusername", "mypassword");
+            myToken = mySF.doRegister("newusername", "newpassword", "newemail");
         } catch (ResponseException e) {
             System.out.println("failure: " + e.getMessage());
             failMessage = e.getMessage();
@@ -154,61 +154,91 @@ public class ServerFacadeTests {
         }
         Assertions.assertNotNull(failMessage, "CreateGame should not be possible while logged in");
     }
-
-    /*
-
-    @Test
-    @Order(8)
-    @DisplayName("Negative CreateGame Test") //fix
-    public void negCreate() {
-        CreateResult gameResult = myCreate.newGame(new CreateRequest("GameName", new AuthData("badToken"))); //should fail
-        System.out.println("CreateGame result was " + gameResult.toString() + "\n");
-        Assertions.assertEquals("{ \"message\"", gameResult.toString().substring(0,11), "CreateGame did not fail when supplied with a bad token");
-    }
-
     @Test
     @Order(9)
     @DisplayName("Positive ListGames Test") //fix
     public void posList() {
-        LoginResult loginResult = myLogin.newLogin(new LoginRequest("username", "password")); //should succeed
-        //System.out.println("Login result was " + loginResult.toString() + "\n");
-        myToken = new AuthData(loginResult.getMyToken());
-        CreateResult gameResult = myCreate.newGame(new CreateRequest("GameName", myToken)); //should succeed
-        ListResult listGameResult = myList.listGames(new ListRequest(myToken)); //should succeed
-        System.out.println("ListGame result was " + listGameResult.toString());
-        Assertions.assertEquals("{ \"games\"", listGameResult.toString().substring(0,9), "ListGames failed with proper AuthToken");
+        try {
+            myToken = mySF.doLogin("myusername", "mypassword");
+        } catch (ResponseException e) {
+            System.out.println("failure: " + e.getMessage());
+        }
+        ListResult myResult = null;
+        try {
+            myResult = mySF.doList(myToken);
+        } catch (ResponseException e) {
+            System.out.println("failure: " + e.getMessage());
+        }
+        Assertions.assertNull(myResult.getMessage(), "ListGames failed with proper AuthToken");
     }
     @Test
     @Order(10)
     @DisplayName("Negative ListGames Test") //fix
     public void negList() {
-        LogoutResult logoutResult = myLogout.logout(new LogoutRequest(myToken));
-        ListResult listGameResult = myList.listGames(new ListRequest(myToken)); //should fail
-        System.out.println("ListGame result was " + listGameResult.toString() + "\n");
-        Assertions.assertEquals("{ \"message\"", listGameResult.toString().substring(0,11), "ListGames did not fail when using an expired token");
+        try {
+            mySF.doLogout(myToken);
+        } catch (ResponseException e) {
+            System.out.println("failure: " + e.getMessage());
+        }
+        ListResult myResult = null;
+        try {
+            myResult = mySF.doList(myToken);
+        } catch (ResponseException e) {
+            System.out.println("failure: " + e.getMessage());
+        }
+        Assertions.assertNull(myResult, "ListGames should not succeed with expired token");
     }
     @Test
     @Order(11)
     @DisplayName("Negative JoinGame Test") //fix
     public void negJoin() {
-        JoinResult joinGameResult = myJoin.joinGame(new JoinRequest("BLACK", 100)); //should fail, no auth
-        System.out.println("JoinGame result was " + joinGameResult.toString());
-        Assertions.assertEquals("{ \"message\"", joinGameResult.toString().substring(0,11), "JoinGame did not fail when given no token");
+        JoinResult myResult = null;
+        try {
+            myResult = mySF.doJoin(myToken, "BLACK", 100);
+        } catch (ResponseException e) {
+            System.out.println("failure: " + e.getMessage());
+        }
+        Assertions.assertNull(myResult, "JoinGame did not fail when given no token");
     }
     @Test
     @Order(12)
     @DisplayName("Positive JoinGame Test") //fix
     public void posJoin() {
-        LoginResult loginResult = myLogin.newLogin(new LoginRequest("username", "password")); //logging back in
-        myToken = new AuthData(loginResult.getMyToken());
-        CreateResult gameResult = myCreate.newGame(new CreateRequest("GameName", myToken)); //should succeed
-        JoinRequest gameRequest = new JoinRequest("BLACK", 100);
-        gameRequest.setMyToken(myToken);
-        JoinResult joinGameResult = myJoin.joinGame(gameRequest); //should succeed
-        System.out.println("JoinGame result was " + joinGameResult.toString() + "\n");
-        Assertions.assertEquals("{}", joinGameResult.toString().substring(0,2), "JoinGame failed with proper AuthToken");
+        System.out.println("Clearing the database");
+        try {
+            mySF.doClear();
+            myToken = mySF.doRegister("myusername", "mypassword", "myemail");
+            mySF.doCreate(myToken, "NewGameName");
+        } catch (ResponseException e) {
+            System.out.println("failure: " + e.getMessage());
+            System.out.println("Clear/register failed");
+        }
+
+        JoinResult myResult = null;
+        try {
+            myResult = mySF.doJoin(myToken, "WHITE", 100);
+        } catch (ResponseException e) {
+            System.out.println("failure: " + e.getMessage());
+            System.out.println("Join failed");
+        }
+        Assertions.assertNotNull(myResult.getMyGame(), "JoinGame failed with proper AuthToken");
+    }
+    @Test
+    @Order(13)
+    @DisplayName("Positive ClearAll Test") //fix
+    public void posClear() {
+        String failmessage = null;
+        try {
+            mySF.doClear();
+            System.out.println("Database cleared");
+        } catch (ResponseException e) {
+            System.out.println("failure: " + e.getMessage());
+            failmessage = e.getMessage();
+        }
+        Assertions.assertNull(failmessage, "Clear database has failed");
     }
 
+    /*
     @Test
     @Order(13)
     @DisplayName("Positive ClearAll Test") //fix
