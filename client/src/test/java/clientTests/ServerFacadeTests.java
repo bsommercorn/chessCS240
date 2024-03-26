@@ -82,6 +82,38 @@ public class ServerFacadeTests {
     @Order(4)
     @DisplayName("Positive Logout Test") //fixed
     public void posLogout() {
+        String failMessage = null;
+        try {
+            myToken = mySF.doLogin("myusername", "mypassword");
+        } catch (ResponseException e) {
+            System.out.println("failure: " + e.getMessage());
+            failMessage = e.getMessage();
+        }
+        try {
+            mySF.doLogout(myToken);
+        } catch (ResponseException e) {
+            System.out.println("failure: " + e.getMessage());
+            failMessage = e.getMessage();
+        }
+        Assertions.assertNull(failMessage, "Unexpected error given correct login & logout information");
+    }
+    @Test
+    @Order(5)
+    @DisplayName("Negative Login Test") //fixed
+    public void negLogin() {
+        String failMessage = null;
+        try {
+            myToken = mySF.doLogin("myusername", "badpassword");
+        } catch (ResponseException e) {
+            System.out.println("failure: " + e.getMessage());
+            failMessage = e.getMessage();
+        }
+        Assertions.assertNotNull(failMessage, "Expected login to fail when using an incorrect password");
+    }
+    @Test
+    @Order(6)
+    @DisplayName("Positive Login Test") //fixed
+    public void posLogin() {
         try {
             myToken = mySF.doLogin("myusername", "mypassword");
         } catch (ResponseException e) {
@@ -91,38 +123,6 @@ public class ServerFacadeTests {
     }
     /*
 
-
-    @Test
-    @Order(4)
-    @DisplayName("Positive Logout Test") //fixed
-    public void posLogout() {
-        LoginResult loginResult = myLogin.newLogin(new LoginRequest("username", "password")); //should succeed
-        //System.out.println("Login result was " + loginResult.toString() + "\n");
-        myToken = new AuthData(loginResult.getMyToken());
-        LogoutResult logoutResult = myLogout.logout(new LogoutRequest(myToken)); //should succeed
-        System.out.println("Logout result was " + logoutResult.toString() + "\n");
-        Assertions.assertEquals("{}", logoutResult.toString().substring(0,2), "Logout returned non-success result string");
-    }
-    @Test
-    @Order(5)
-    @DisplayName("Negative Login Test") //fixed
-    public void negLogin() {
-        LoginResult loginResult = myLogin.newLogin(new LoginRequest("username", "badpassword")); //should fail
-        System.out.println("Login result was " + loginResult.toString());
-        Assertions.assertEquals("{ \"message\"", loginResult.toString().substring(0,11), "Login did not fail when using an incorrect password");
-    }
-    @Test
-    @Order(6)
-    @DisplayName("Positive Login Test") //fixed
-    public void posLogin() {
-        RegisterResult myResult = myRegister.newRegister(new RegisterRequest("username", "password", "email"));//register
-        myToken = new AuthData(myResult.getMyToken());
-        LogoutResult logoutResult = myLogout.logout(new LogoutRequest(myToken)); //should succeed
-        LoginResult loginResult = myLogin.newLogin(new LoginRequest("username", "password")); //should succeed
-        System.out.println("Login result was " + loginResult.toString() + "\n");
-        //myToken = loginResult.getMyToken();
-        Assertions.assertEquals("{ \"username\"", loginResult.toString().substring(0,12), "Login failed using correct username and password");
-    }
 
     @Test
     @Order(7)
