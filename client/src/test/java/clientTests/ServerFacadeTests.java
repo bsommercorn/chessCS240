@@ -121,20 +121,42 @@ public class ServerFacadeTests {
         }
         Assertions.assertNotNull(myToken, "Expected AuthToken from successful login");
     }
-    /*
-
-
     @Test
     @Order(7)
     @DisplayName("Positive CreateGame Test") //fix
     public void posCreate() {
-        LoginResult loginResult = myLogin.newLogin(new LoginRequest("username", "password")); //should succeed
-        //System.out.println("Login result was " + loginResult.toString() + "\n");
-        myToken = new AuthData(loginResult.getMyToken());
-        CreateResult gameResult = myCreate.newGame(new CreateRequest("GameName", myToken)); //should succeed
-        System.out.println("CreateGame result was " + gameResult.toString());
-        Assertions.assertEquals("{ \"gameID\"", gameResult.toString().substring(0,10), "CreateGame failed with proper AuthToken");
+        String failMessage = null;
+        CreateResult gameResult = null;
+        try {
+            gameResult = mySF.doCreate(myToken, "NewGameName");
+        } catch (ResponseException e) {
+            System.out.println("failure: " + e.getMessage());
+            failMessage = e.getMessage();
+        }
+        Assertions.assertNull(failMessage, "CreateGame failed with proper AuthToken");
     }
+    @Test
+    @Order(8)
+    @DisplayName("Negative CreateGame Test") //fix
+    public void negCreate() {
+        String failMessage = null;
+        try {
+            mySF.doLogout(myToken);
+        } catch (ResponseException e) {
+            System.out.println("failure: " + e.getMessage());
+        }
+        CreateResult gameResult = null;
+        try {
+            gameResult = mySF.doCreate(myToken, "NewGameName");
+        } catch (ResponseException e) {
+            System.out.println("failure: " + e.getMessage());
+            failMessage = e.getMessage();
+        }
+        Assertions.assertNotNull(failMessage, "CreateGame should not be possible while logged in");
+    }
+
+    /*
+
     @Test
     @Order(8)
     @DisplayName("Negative CreateGame Test") //fix
