@@ -144,15 +144,41 @@ public class Main {
                 if (Objects.equals(myinput, "leave")) {
                     joinedGame = false;
                     observing = false;
+                    myGame = null;
+                }
+                if (!observing && Objects.equals(myinput, "move")) {
+                    doMove(myGame);
+                }
+                if (!observing && Objects.equals(myinput, "resign")) {
+                    doResign(myGame);
+                }
+                if (Objects.equals(myinput, "path")) {
+                    doPath(myGame);
                 }
             }
             System.out.println("----------------------------------------");
         }
     }
 
-    public static void doRedraw(ChessGame myGame) {
-        System.out.println(myGame.toString()); //I think this is right
-        //do something with a board that we have stored already?
+    public static void doRedraw(ChessGame myGame) { //check which player they are, or just observing
+        System.out.println(myGame.toString()); //I think this is right, check obv
+    }
+
+    public static void doMove(ChessGame myGame) {
+        Scanner userInput = new Scanner(System.in);
+        System.out.println("enter piece start position (ex: h5)");
+        String myStart = userInput.nextLine();
+        System.out.println("enter piece end position (ex: h6)");
+        String myEnd = userInput.nextLine();
+        //make a new chessMove
+    }
+
+    public static void doResign(ChessGame myGame) {
+        //nothing yet
+    }
+
+    public static void doPath(ChessGame myGame) {
+        //nothing yet
     }
 
     public static AuthData doLogin() {
