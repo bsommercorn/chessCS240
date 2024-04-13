@@ -33,7 +33,10 @@ public class Main {
         Scanner userInput = new Scanner(System.in);
         String myinput = "begin";
         boolean loggedin = false;
+        boolean joinedGame = false;
+        boolean observing = false;
         AuthData myToken = null;
+        ChessGame myGame = null;
         //Repl myRepl = new Repl();
         while (!Objects.equals(myinput, "quit")) { //cool this works now
             if (!loggedin) {
@@ -69,7 +72,7 @@ public class Main {
                     }
                 }
             }
-            if (loggedin) {
+            if (loggedin && !joinedGame) {
                 System.out.println("You are logged in as " + "myToken.getUser()" + ". You can access the following commands:");
                 System.out.println("type 'help' for help menu");
                 System.out.println("type 'logout' to logout");
@@ -99,10 +102,13 @@ public class Main {
                     doList(myToken);
                 }
                 if (Objects.equals(myinput, "join")) { //needs to print fancy board
-                    doJoin(myToken);
+                    myGame = doJoin(myToken);
+                    joinedGame = true; //only if it worked!
                 }
                 if (Objects.equals(myinput, "observe")) { //needs to print fancy board
                     doObserve(myToken);
+                    joinedGame = true; // only if it worked!
+                    observing = true;
                 }
                 if (Objects.equals(myinput, "clear")) {
                     System.out.println("Clearing the database.");
@@ -116,8 +122,37 @@ public class Main {
                     System.out.println("You are now logged out!");
                 }
             }
+            if (joinedGame) {
+                System.out.println("You are logged in as " + "myToken.getUser()" + ". You can access the following commands:");
+                //info about which game they have joined? Printing the board initially?
+                //may need to track game details, just like we track authToken for logging in
+                System.out.println("type 'help' for help menu");
+                System.out.println("type 'redraw' to redraw the current board");
+                System.out.println("type 'leave' to exit the game and return to post-login menu");
+                if (!observing) {
+                    System.out.println("type 'move' to make a move");
+                    System.out.println("type 'resign' to resign this game");
+                }
+                System.out.println("type 'path' to highlight all legal moves for a piece");
+                myinput = userInput.nextLine();
+                if (Objects.equals(myinput, "help")) {
+                    System.out.println("This is the help menu");
+                }
+                if (Objects.equals(myinput, "redraw")) {
+                    doRedraw(myGame);
+                }
+                if (Objects.equals(myinput, "leave")) {
+                    joinedGame = false;
+                    observing = false;
+                }
+            }
             System.out.println("----------------------------------------");
         }
+    }
+
+    public static void doRedraw(ChessGame myGame) {
+        System.out.println(myGame.toString()); //I think this is right
+        //do something with a board that we have stored already?
     }
 
     public static AuthData doLogin() {
@@ -184,7 +219,7 @@ public class Main {
         }
     }
 
-    public static void doJoin(AuthData myToken) {
+    public static ChessGame doJoin(AuthData myToken) {
         Scanner userInput = new Scanner(System.in);
         System.out.println("Please enter the id of the game you want to join as a player");
         int gameID;
@@ -193,7 +228,7 @@ public class Main {
         }
         catch (InputMismatchException e) {
             System.out.println("Join failed due to invalid ID");
-            return;
+            return null;
         }
         userInput.nextLine();
         System.out.println("Please enter the player color you would like to join as, type 'BLACK' or 'WHITE'");
@@ -207,10 +242,12 @@ public class Main {
             ChessGame joinedGame = new ChessGame();
             joinedGame.setBoard(myResult.getMyGame().getBoardState());
             System.out.println(joinedGame.toString());
+            return joinedGame;
         } catch (ResponseException e) {
             System.out.println("failure: " + e.getMessage());
             System.out.println("Could not join game.");
         }
+        return null;
     }
 
     public static void doObserve(AuthData myToken) {
@@ -237,8 +274,9 @@ public class Main {
             System.out.println("failure: " + e.getMessage());
             System.out.println("Could not observe game.");
         }
+    }
 
-        /*
+    /*
         JoinGameRequest myReq = new JoinGameRequest(null, gameID);
         myReq.setMyToken(myToken);
         //JoinGameResult myResult = new JoinGameService().claimSpot(myReq);
@@ -257,7 +295,6 @@ public class Main {
         }
 
          */
-    }
 
     /*
     public static void doJoin(AuthToken myToken) {
