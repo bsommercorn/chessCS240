@@ -71,7 +71,7 @@ public class ChessGame {
             throw new InvalidMoveException("No piece to move!");
         }
         if (whosTurn != null && whosTurn != activePiece.getTeamColor()) {
-            throw new InvalidMoveException("Not your turn!");
+            throw new InvalidMoveException("Not this color's turn!");
         }
         //System.out.println("chess.Piece found: " + activePiece.toString());
         ArrayList<ChessMove> validmoves = (ArrayList<ChessMove>) activePiece.pieceMoves(myboard, move.getStartPosition());

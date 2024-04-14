@@ -18,6 +18,36 @@ public class ChessPosition {
         myfile = col - 1;
     }
 
+    public ChessPosition(String algebraicNote) {
+        switch (algebraicNote.charAt(0)) {
+            case 'a':
+                myfile = 0;
+                break;
+            case 'b':
+                myfile = 1;
+                break;
+            case 'c':
+                myfile = 2;
+                break;
+            case 'd':
+                myfile = 3;
+                break;
+            case 'e':
+                myfile = 4;
+                break;
+            case 'f':
+                myfile = 5;
+                break;
+            case 'g':
+                myfile = 6;
+                break;
+            case 'h':
+                myfile = 7;
+                break;
+        }
+        myrank = Character.getNumericValue(algebraicNote.charAt(1)) - 1;
+    }
+
     /**
      * @return which row this position is in
      * 1 codes for the bottom row

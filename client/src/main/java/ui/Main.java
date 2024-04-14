@@ -1,18 +1,19 @@
 package ui;
 
 import chess.ChessGame;
+import chess.ChessMove;
+import chess.ChessPosition;
+import chess.InvalidMoveException;
+import exception.ResponseException;
 import model.AuthData;
-import model.Request.JoinRequest;
 import model.Result.CreateResult;
 import model.Result.JoinResult;
 import model.Result.ListResult;
-import model.Result.LogoutResult;
 import serverFacade.serverFacade;
 
 import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.Scanner;
-import serverFacade.*;
 
 public class Main {
     private static final String UNICODE_ESCAPE = "\u001b";//\u001b[48;5;15m
@@ -126,6 +127,8 @@ public class Main {
                 System.out.println("You are logged in as " + "myToken.getUser()" + ". You can access the following commands:");
                 //info about which game they have joined? Printing the board initially?
                 //may need to track game details, just like we track authToken for logging in
+                //need to constantly check for notifications from other players doing moves
+                //also send notifications to other players if we've changed the board somehow.
                 System.out.println("type 'help' for help menu");
                 System.out.println("type 'redraw' to redraw the current board");
                 System.out.println("type 'leave' to exit the game and return to post-login menu");
@@ -147,7 +150,7 @@ public class Main {
                     myGame = null;
                 }
                 if (!observing && Objects.equals(myinput, "move")) {
-                    doMove(myGame);
+                    doMove(myGame); //this should only work if it's the right turn
                 }
                 if (!observing && Objects.equals(myinput, "resign")) {
                     doResign(myGame);
@@ -171,6 +174,12 @@ public class Main {
         System.out.println("enter piece end position (ex: h6)");
         String myEnd = userInput.nextLine();
         //make a new chessMove
+        ChessMove myMove = new ChessMove(new ChessPosition(myStart), new ChessPosition(myEnd));
+        try {
+            myGame.makeMove(myMove);
+        } catch (InvalidMoveException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public static void doResign(ChessGame myGame) {

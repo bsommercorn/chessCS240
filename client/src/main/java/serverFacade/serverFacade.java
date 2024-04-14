@@ -1,5 +1,6 @@
 package serverFacade;
 import com.google.gson.Gson;
+import exception.ResponseException;
 import model.AuthData;
 import model.Request.*;
 import model.Result.*;
