@@ -10,18 +10,21 @@ import model.Result.CreateResult;
 import model.Result.JoinResult;
 import model.Result.ListResult;
 import serverFacade.serverFacade;
+import websocket.WebSocketFacade;
 
 import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
+    private static WebSocketFacade ws;
     private static final String UNICODE_ESCAPE = "\u001b";//\u001b[48;5;15m
     private static final String SET_BG_COLOR = UNICODE_ESCAPE + "[48;5;";
     public static final String SET_BG_COLOR_DARK_GREY = SET_BG_COLOR + "235m";
     public static final String SET_BG_COLOR_WHITE = SET_BG_COLOR + "15m";
     private static final String ANSI_ESCAPE = "\033";
     public static final String ANSI_GREEN = "\u001B[32m";
+    static Integer myID = 0;
 
     private static serverFacade mySF = new serverFacade("http://localhost:8080/");
     /*
@@ -137,6 +140,8 @@ public class Main {
                     System.out.println("type 'resign' to resign this game");
                 }
                 System.out.println("type 'path' to highlight all legal moves for a piece");
+
+                //ws.
                 myinput = userInput.nextLine();
                 if (Objects.equals(myinput, "help")) {
                     System.out.println("This is the help menu");
@@ -147,7 +152,7 @@ public class Main {
                 if (Objects.equals(myinput, "leave")) {
                     joinedGame = false;
                     observing = false;
-                    myGame = null;
+                    //myGame = null; //backing out of the game screen is all that's required
                 }
                 if (!observing && Objects.equals(myinput, "move")) {
                     doMove(myGame); //this should only work if it's the right turn
@@ -168,6 +173,9 @@ public class Main {
     }
 
     public static void doMove(ChessGame myGame) {
+        /* Instead of sending commands through the ServerFacade, we send them through the WebsocketFacade
+         */
+
         Scanner userInput = new Scanner(System.in);
         System.out.println("enter piece start position (ex: h5)");
         String myStart = userInput.nextLine();
@@ -177,7 +185,8 @@ public class Main {
         ChessMove myMove = new ChessMove(new ChessPosition(myStart), new ChessPosition(myEnd));
         try {
             myGame.makeMove(myMove);
-        } catch (InvalidMoveException e) {
+            ws.doMove(myGame, myID);
+        } catch (InvalidMoveException | ResponseException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -273,10 +282,10 @@ public class Main {
         try {
             JoinResult myResult = mySF.doJoin(myToken, mycolor, gameID);
             System.out.println("Joined the game!");
-
             ChessGame joinedGame = new ChessGame();
             joinedGame.setBoard(myResult.getMyGame().getBoardState());
             System.out.println(joinedGame.toString());
+            myID = gameID;
             return joinedGame;
         } catch (ResponseException e) {
             System.out.println("failure: " + e.getMessage());

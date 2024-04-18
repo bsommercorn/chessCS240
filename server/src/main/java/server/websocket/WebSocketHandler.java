@@ -1,5 +1,6 @@
 package server.websocket;
 
+import chess.ChessGame;
 import com.google.gson.Gson;
 import dataAccess.*;
 import exception.ResponseException;
@@ -19,19 +20,19 @@ public class WebSocketHandler {
     private final ConnectionManager connections = new ConnectionManager();
 
     @OnWebSocketMessage
-    public void onMessage(Session session, String message) throws IOException {
+    public void onMessage(Session session, String message) throws IOException { //this class belongs to the server
         Action action = new Gson().fromJson(message, Action.class);
-        switch (action.type()) {
-            case ENTER -> enter(action.visitorName(), session);
-            case EXIT -> exit(action.visitorName());
+        switch (action.type()) { //change this
+            case MOVE -> update(action.gameUpdate(), action.gameID(), session); //
+            //case EXIT -> exit(action.visitorName());
         }
     }
 
-    private void enter(String visitorName, Session session) throws IOException {
-        connections.add(visitorName, session);
-        var message = String.format("%s is in the shop", visitorName);
+    private void update(ChessGame gameUpdate, Integer gameID, Session session) throws IOException {
+        connections.update(gameID, gameUpdate, session);
+        var message = String.format("%s is in the shop", gameUpdate);
         var notification = new Notification(Notification.Type.ARRIVAL, message);
-        connections.broadcast(visitorName, notification);
+        connections.broadcast(gameUpdate, notification);
     }
 
     private void exit(String visitorName) throws IOException {

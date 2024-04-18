@@ -1,9 +1,12 @@
 package server;
 
+import exception.ResponseException;
 import handler.*;
+import server.websocket.WebSocketHandler;
 import spark.*;
 
 public class Server {
+    private final WebSocketHandler webSocketHandler = new WebSocketHandler();
 
     public static void main(String[] args) {
         new Server().run(8080);
@@ -13,6 +16,8 @@ public class Server {
         Spark.port(desiredPort);
 
         Spark.staticFiles.location("web");
+
+        Spark.webSocket("/connect", webSocketHandler);
 
         Spark.post("/user", (req, res) -> (new RegisterHandler()).register(req, res));
         Spark.post("/session", (req, res) -> (new LoginHandler()).login(req, res));
@@ -26,6 +31,8 @@ public class Server {
 
         Spark.post("/games", (req, res) -> (new ListGamesHandler()).getList(req, res)); //shhhhhh, don't question it
 
+        Spark.exception(ResponseException.class, this::exceptionHandler); //do we need this?
+
         Spark.awaitInitialization();
         return Spark.port();
     }
@@ -33,5 +40,9 @@ public class Server {
     public void stop() {
         Spark.stop();
         Spark.awaitStop();
+    }
+
+    private void exceptionHandler(ResponseException ex, Request req, Response res) {
+        res.status(ex.StatusCode());
     }
 }

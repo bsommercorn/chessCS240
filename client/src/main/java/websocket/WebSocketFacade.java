@@ -1,5 +1,6 @@
 package websocket;
 
+import chess.ChessGame;
 import com.google.gson.Gson;
 import exception.ResponseException;
 import webSocketMessages.Action;
@@ -14,8 +15,7 @@ import java.net.URISyntaxException;
 public class WebSocketFacade extends Endpoint {
 
     Session session;
-    NotificationHandler notificationHandler;
-
+    NotificationHandler notificationHandler; //this class belongs to the client
 
     public WebSocketFacade(String url, NotificationHandler notificationHandler) throws ResponseException {
         try {
@@ -44,15 +44,15 @@ public class WebSocketFacade extends Endpoint {
     public void onOpen(Session session, EndpointConfig endpointConfig) {
     }
 
-    public void enterPetShop(String visitorName) throws ResponseException {
+    public void doMove(ChessGame gameUpdate, Integer gameID) throws ResponseException {
         try {
-            var action = new Action(Action.Type.ENTER, visitorName);
-            this.session.getBasicRemote().sendText(new Gson().toJson(action));
+            var action = new Action(Action.Type.MOVE, gameUpdate, gameID);
+            this.session.getBasicRemote().sendText(new Gson().toJson(action)); //where does this go???
         } catch (IOException ex) {
             throw new ResponseException(500, ex.getMessage());
         }
     }
-
+    /*
     public void leavePetShop(String visitorName) throws ResponseException {
         try {
             var action = new Action(Action.Type.EXIT, visitorName);
@@ -62,6 +62,7 @@ public class WebSocketFacade extends Endpoint {
             throw new ResponseException(500, ex.getMessage());
         }
     }
+     */
 
 }
 
